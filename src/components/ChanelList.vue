@@ -1,19 +1,10 @@
 <script setup lang="ts">
     import AddChannel from '@/components/channels/AddChannel.vue';
     import Channel from '@/components/channels/Channelitem.vue';
-    import {GetChannelByUser} from "@/ts/channels"
+    import {GetChannelByUser,type ChannelPromise} from "@/ts/channels"
 
     import { ref, onMounted, type Ref } from "vue"
-    
-    type ChannelPromise = {
-        id: number,
-        name:string,
-        img:string,
-        users:string[],
-        theme:string
-    }
 
-    
     const channels: Ref<ChannelPromise[]> = ref([])
 
     onMounted(async () => {

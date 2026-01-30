@@ -2,6 +2,14 @@ const api_url = import.meta.env.VITE_API_URL as string
 
 const token = "eyJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6ImZhbHNlIiwiaWF0IjoiMTc2OTc3ODE1OCIsInN1YiI6ImMuam9seSJ9.oD2Rq2yImbih8BW7JL07hFIA36KgD9QeVDRaaSGWecs"
 
+type ChannelPromise = {
+    id: number,
+    name:string,
+    img:string,
+    users:string[],
+    theme:string
+}
+
 const GetChannelByUser = async () => {
     const request = await fetch(api_url+"/protected/user/channels",{
         method : "GET",
@@ -20,6 +28,7 @@ const GetChannelByID = async (id: number) => {
 
 export {
     GetChannelByUser,
-    GetChannelByID
+    GetChannelByID,
+    type ChannelPromise
 }
 

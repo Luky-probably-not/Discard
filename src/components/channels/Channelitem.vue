@@ -1,13 +1,7 @@
 <script setup lang="ts">
-    type ChannelPromise = {
-    id: number
-    name: string
-    img: string
-    }
+    import {type ChannelPromise} from "@/ts/channels"
 
-    defineProps<{
-    channel: ChannelPromise
-    }>()
+    defineProps<{channel: ChannelPromise}>()
 </script>
 
 <template>

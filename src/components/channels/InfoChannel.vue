@@ -1,14 +1,8 @@
 <script setup lang="ts">
-    import {GetChannelByID} from "@/ts/channels"
+    import {GetChannelByID, type ChannelPromise} from "@/ts/channels"
 
     import { ref,watch, type Ref } from "vue"
-    type ChannelPromise = {
-        id: number,
-        name:string,
-        img:string,
-        users:string[],
-        theme:string
-    }
+   
     const channelID = ref<number | null>(null)
     const infoChannel: Ref<ChannelPromise | null> = ref(null)
 
