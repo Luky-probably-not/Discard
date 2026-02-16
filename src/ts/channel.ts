@@ -1,5 +1,6 @@
+import { type Channel} from "@/ts/domain/channel"
+import { ref } from "vue"
 const api_url = import.meta.env.VITE_API_URL as string
-
 
 const GetChannelByUser = async (token : string) => {
     const request = await fetch(api_url+"/protected/user/channels",{
@@ -17,6 +18,11 @@ const GetChannelByID = async (token : string, id: number) => {
   return channels.find((c: any) => c.id === id)
 }
 
+const selectedChannelID = ref<number | null>(null)
+
 export {
-    GetChannelByID, GetChannelByUser
+    selectedChannelID,
+    GetChannelByUser,
+    GetChannelByID,
+    type Channel
 }

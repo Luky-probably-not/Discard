@@ -1,7 +1,7 @@
 import type { Theme } from "./theme";
 import type { User } from "./user";
 
-export class Chanel {
+export class Channel {
     id: number = -1;
     name: string = "";
     img: string = "";

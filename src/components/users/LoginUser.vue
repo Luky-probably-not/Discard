@@ -2,7 +2,9 @@
 import { connectedUser } from '@/ts/connectedUser';
 import { login } from '@/ts/users';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const userName = ref("")
 const password = ref("")
 
@@ -23,6 +25,9 @@ const loginUser = async () => {
     user.addUser(token, userName.value)
     console.log(user.tokenJwt)
     console.log(user.userName)
+    if (token && token !== "") {
+        router.push({ name: "home" })
+    }
 }
 </script>
 

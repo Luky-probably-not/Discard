@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import LoginUser from '@/components/users/LoginUser.vue';
 import { connectedUser } from '@/ts/connectedUser';
 import { addUserToChannel } from '@/ts/users';
 import { ref } from 'vue';
@@ -25,7 +24,6 @@ const addUser = async () => {
 
 </script>
 <template>
-    <p>Add User Component</p>
     <LoginUser />
     <input type="integer" v-model="channelId">
     <input type="text" v-model="userName">
