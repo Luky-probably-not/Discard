@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import {selectedChannelID} from "@/ts/channel"
-    import { type Channel } from "@/ts/domain/channel"
+    import { type ChannelElement } from "@/ts/domain/channel"
 
-    defineProps<{channel: Channel}>()
+    defineProps<{channel: ChannelElement}>()
 </script>
 
 <template>
@@ -11,3 +11,5 @@
         <img :src="channel.img" alt="channel picture" />
     </div>
 </template>
+
+<style scoped></style>

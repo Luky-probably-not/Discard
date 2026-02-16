@@ -1,12 +1,12 @@
 <script setup lang="ts">
     import {GetChannelByID, selectedChannelID} from "@/ts/channel"
-    import {type Channel} from "@/ts/domain/channel"
+    import {type ChannelInfo} from "@/ts/domain/channel"
     import { connectedUser } from "@/ts/connectedUser"
 
     import { ref,watch, type Ref } from "vue"
    
     const user = connectedUser()
-    const infoChannel: Ref<Channel | null> = ref(null)
+    const infoChannel: Ref<ChannelInfo | null> = ref(null)
 
     watch(selectedChannelID, async (newID) => {
         if (newID !== null) {
