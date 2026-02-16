@@ -6,4 +6,6 @@ const updateDataChannelUrl = (idChannel : number) => {
     return updateChannelUrl.replace("{channel_id}",idChannel.toString())
 }
 
-export { updateDataChannelUrl };
+export { 
+    updateDataChannelUrl,
+};

@@ -2,7 +2,9 @@
     import {selectedChannelID} from "@/ts/channel"
     import { type ChannelInfo } from "@/ts/domain/channel"
 
-    defineProps<{channel: ChannelInfo}>()
+    const props = defineProps<{
+        channel: ChannelInfo
+    }>()
 </script>
 
 <template>

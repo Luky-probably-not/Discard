@@ -24,7 +24,6 @@ const GetChannelByID = async (token : string, id: number) : Promise<ChannelInfo>
 
 const UpdateChannel = async (token : string, channelId : number, newChannel : ChannelInfo) => {
     const url = updateDataChannelUrl(channelId)
-    console.log(url);
     const request = await fetch(url,{
         method: "PUT",
         body: JSON.stringify(newChannel),
@@ -37,7 +36,7 @@ const UpdateChannel = async (token : string, channelId : number, newChannel : Ch
 }
 
 
-const AddChannel = async (token : string, name: string, img: string) => {
+const PostChannel = async (token : string, name: string, img: string) => {
     const request = await fetch(api_url+"/protected/channel",{
         method : "POST",
         body:JSON.stringify({
@@ -60,10 +59,10 @@ const AddChannel = async (token : string, name: string, img: string) => {
     }
     channels.value.push(newChannel)
     selectedChannelID.value = response
-    return response
+    return
 }
 
-const selectedChannelID = ref<number | null>(null)
+const selectedChannelID = ref<number>(0)
 const PrintPopUpChannel = ref(false)
 const channels: Ref<ChannelInfo[]> = ref([])
 
@@ -74,5 +73,5 @@ export {
     channels,
     selectedChannelID,
     PrintPopUpChannel,
-    AddChannel
+    PostChannel
 }

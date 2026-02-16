@@ -1,6 +1,7 @@
+import { ref } from "vue";
 import type { User } from "./domain/user";
 import { addUserToChannelUrl, getMultipleUserByNameUrl, getOneUserByNameUrl, loginUrl } from "./urls/users";
-
+const api_url = import.meta.env.VITE_API_URL as string
 
 const login = async (username : string, password : string) : Promise<string> => {
     var request = await fetch(loginUrl, {
@@ -50,5 +51,27 @@ const getMultipleUserByName = async (token : string, users : string[]) : Promise
     return response;
 }
 
-export { addUserToChannel, getMultipleUserByName, getOneUserByName, login };
+const UpdateUser = async (token : string, user : User) => {
+    const request = await fetch(api_url+"/protected/user/meta", {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers : {
+            "Authorization" : "Bearer " + token,
+            "Content-type" : "application/json"
+        }
+    })
+    console.log(token)
+    return;
+}
+
+const showProfile = ref(false);
+
+export { 
+    addUserToChannel, 
+    getMultipleUserByName, 
+    getOneUserByName, 
+    login,
+    UpdateUser,
+    showProfile
+};
 

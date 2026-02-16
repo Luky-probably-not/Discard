@@ -1,30 +1,29 @@
 <script setup lang="ts">
 import InfoChannel from '@/components/channels/InfoChannel.vue';
 import AddUser from '@/components/users/AddUser.vue';
-import { connectedUser } from '@/ts/connectedUser';
 import PopUpEditChannel from './channels/PopUpEditChannel.vue';
-import LoginUser from './users/LoginUser.vue';
+import { selectedChannelID } from '@/ts/channel';
 
-const user = connectedUser();
-const channelId = 273
+const props = defineProps({
+    token : String,
+})
 
 </script>
 <template>
-    <LoginUser :store="user" :token="''" />
     <AddUser 
-        v-if="user.tokenJwt != ''"
-        :token-jwt="user.tokenJwt"
-        :channelId="channelId"
+        v-if="props.token != ''"
+        :token-jwt="props.token"
+        :channelId?="selectedChannelID"
     />
     <PopUpEditChannel
-        v-if="user.tokenJwt != ''"
-        :token-jwt="user.tokenJwt"
-        :channel-id="channelId"
+        v-if="props.token != ''"
+        :token-jwt="props.token"
+        :channel-id?="selectedChannelID"
     />
     <InfoChannel
-        v-if="user.tokenJwt != ''"
-        :token-jwt="user.tokenJwt"
-        :channel-id="channelId"
+        v-if="props.token != ''"
+        :token-jwt="props.token"
+        :channel-id?="selectedChannelID"
     />
 </template>
 <style scoped>

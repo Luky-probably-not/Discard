@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import AddChannel from '@/components/channels/AddChannel.vue';
     import Channelitem from '@/components/channels/Channelitem.vue';
+    import UserProfile from './users/UserProfile.vue';
     
     import {GetChannelByUser,channels} from "@/ts/channel"
 
@@ -8,10 +9,13 @@
 
     import {onMounted} from "vue"
 
-    const user = connectedUser()
+    const props = defineProps({
+        token : String,
+        store : connectedUser
+    })
 
     onMounted(async () => {
-        channels.value = await GetChannelByUser(user.tokenJwt)
+        channels.value = await GetChannelByUser(props.token!)
     })
 
 </script>
@@ -20,7 +24,7 @@
     <div v-for="channel in channels" :key="channel.id">
         <Channelitem :channel="channel" />
     </div>
-
+    <UserProfile :token="props.token" :store="props.store"/>
     
 </template>
 <style scoped>

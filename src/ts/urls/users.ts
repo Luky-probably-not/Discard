@@ -17,4 +17,9 @@ const getOneUserByNameUrl = (user : string) : string => {
     return `${getUserByNameUrl}?users=${user}`
 };
 
-export { addUserToChannelUrl, getMultipleUserByNameUrl, getOneUserByNameUrl, loginUrl}
+export { 
+    addUserToChannelUrl, 
+    getMultipleUserByNameUrl, 
+    getOneUserByNameUrl, 
+    loginUrl,
+}
