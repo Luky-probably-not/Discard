@@ -32,13 +32,15 @@ const loginUser = async () => {
 </script>
 
 <template>
-    <form >
+    <form @submit.prevent="loginUser">
         <label>Username : </label>
         <input type="text" v-model="userName">
+
         <label>Password : </label>
-        <input type="text" v-model="password">
+        <input type="password" v-model="password">
+
+        <button type="submit">+</button>
     </form>
-    <button @click="loginUser">+</button>
 </template>
 
 
