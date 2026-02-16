@@ -1,17 +1,10 @@
-import type { Theme } from "./theme";
-import type { User } from "./user";
-
-export class ChannelElement {
-    id: number = -1;
-    name: string = "";
-    img: string = "";
-}
+import { Theme } from "./theme";
 
 export class ChannelInfo {
     id: number = -1;
     name: string = "";
     img: string = "";
     creator: string = "";
-    theme: Array<Theme> = [];
-    users: Array<User> = [];
+    theme: Theme = new Theme;
+    users: Array<string> = [];
 }

@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import {selectedChannelID} from "@/ts/channel"
-    import { type ChannelElement } from "@/ts/domain/channel"
+    import { type ChannelInfo } from "@/ts/domain/channel"
 
-    defineProps<{channel: ChannelElement}>()
+    defineProps<{channel: ChannelInfo}>()
 </script>
 
 <template>

@@ -1,28 +1,35 @@
 <script setup lang="ts">
-    import {GetChannelByID, selectedChannelID} from "@/ts/channel"
-    import {type ChannelInfo} from "@/ts/domain/channel"
-    import { connectedUser } from "@/ts/connectedUser"
+import { GetChannelByID } from '@/ts/channel';
+import { getOneUserByName } from '@/ts/users';
+import { ref, type Ref } from 'vue';
 
-    import { ref,watch, type Ref } from "vue"
-   
-    const user = connectedUser()
-    const infoChannel: Ref<ChannelInfo | null> = ref(null)
+const props = defineProps({
+    tokenJwt : String,
+    channelId : Number
+});
 
-    watch(selectedChannelID, async (newID) => {
-        if (newID !== null) {
-            infoChannel.value = await GetChannelByID(user.tokenJwt, newID)
+const channelUsers : Ref<Array<string>, Array<string>> = ref([]);
+const currentChannel = props.channelId!;
+
+const loadChannelUsers = async () =>{
+    if (props.tokenJwt != "")
+    {
+        channelUsers.value = (await GetChannelByID(props.tokenJwt!, currentChannel)).users;
+        for (var idx = 0; idx < channelUsers.value.length; idx++){
+            var displayedName = await getOneUserByName(props.tokenJwt!, channelUsers.value[idx]!)            
+            channelUsers.value[idx] = displayedName?.display_name ?? channelUsers.value[idx];
         }
-    })
+        
+    }
+}
+loadChannelUsers();
+
 </script>
 <template>
-    <div v-if="infoChannel">
-        <h2>Détails du channel :</h2>
-        <p>{{infoChannel.id}} </p>
-        <p>{{ infoChannel.name }}</p>
-        <img :src="infoChannel.img" alt="channel picture" />
-        <p>Users : {{ infoChannel.users.join(", ") }}</p>
-        <p>{{infoChannel.theme}} </p>
-    </div>
+    <h1>Channels users</h1>
+    <li>
+        <div v-for="user of channelUsers">{{ user }}</div>
+    </li>
 </template>
 <style scoped>
 </style>
