@@ -1,10 +1,11 @@
 import { ref } from "vue";
 import type { User } from "./domain/user";
-import { addUserToChannelUrl, getMultipleUserByNameUrl, getOneUserByNameUrl, loginUrl } from "./urls/users";
+import { getMultipleUserByNameUrl, getOneUserByNameUrl } from "./domain/UsefulURL";
+
 const api_url = import.meta.env.VITE_API_URL as string
 
 const login = async (username : string, password : string) : Promise<string> => {
-    var request = await fetch(loginUrl, {
+    var request = await fetch(api_url + "/login", {
         method: "POST",
         body: JSON.stringify({
             "username" : username,
@@ -19,7 +20,7 @@ const login = async (username : string, password : string) : Promise<string> => 
 }
 
 const addUserToChannel = async (token : string, username : string, idChannel : number ) => {
-    var request = await fetch(addUserToChannelUrl(idChannel, username), {
+    var request = await fetch(api_url + `/protected/channel/${idChannel}/user/${username}`, {
         method: "PUT",
         headers : {
             "Authorization" : "Bearer " + token

@@ -1,4 +1,3 @@
-import { updateDataChannelUrl } from "./urls/channels";
 import { type ChannelInfo} from "@/ts/domain/channel"
 import { ref, type Ref } from "vue"
 import { Theme } from "./domain/theme";
@@ -23,8 +22,7 @@ const GetChannelByID = async (token : string, id: number) : Promise<ChannelInfo>
 }
 
 const UpdateChannel = async (token : string, channelId : number, newChannel : ChannelInfo) => {
-    const url = updateDataChannelUrl(channelId)
-    const request = await fetch(url,{
+    const request = await fetch(api_url + `/protected/channel/${channelId}/update_metadata`,{
         method: "PUT",
         body: JSON.stringify(newChannel),
         headers : {
