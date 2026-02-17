@@ -13,14 +13,32 @@ const submitForm = async () => {
 }
 </script>
 <template>
-    <button @click="emit('CloseAddChannel')">X</button>
-    <form @submit.prevent="submitForm">
-        <label>Name : </label>
-        <input type="text" v-model="name">
-        <label>Image URL : </label>
-        <input type="text" v-model="img">
-        <button type="submit">+</button>
-    </form>
+    <section class="popup">
+        <section class="popup-headbar">
+            <button class="close-btn" @click="emit('CloseAddChannel')">×</button>
+        </section>
+        <form @submit.prevent="submitForm" class="popup-form">
+            <input type="text" v-model="name" placeholder="Channel Name" required />
+            <input type="text" v-model="img" placeholder="Image URL" />
+            <button type="submit">Create</button>
+        </form>
+    </section>
 </template>
 <style scoped>
+.popup {
+    width: 500px;
+    height: 300px;
+    border-radius: 5px;
+    padding: 0 50px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: var(--box-shadow-extern);
+    font-family: var(--text-font-family);
+    background-color: var(--primary-color);
+    border: var(--border-color);
+}
+
+
 </style>
