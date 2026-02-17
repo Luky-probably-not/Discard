@@ -128,8 +128,9 @@ const handleKeydown = (e: KeyboardEvent) => {
 
         <!-- Character Counter -->
         <div v-if="messageInput" class="char-counter">
-            <span>{{ messageInput.length }} / {{ maxLength }}</span>
-            <span v-if="isOverLimit" class="error">(LIMIT EXCEEDED)</span>
+            <span :class="{ 'error': isOverLimit }">
+                {{ messageInput.length }} / {{ maxLength }}
+            </span>
         </div>
     </div>
 </template>
@@ -203,6 +204,5 @@ textarea:focus {
 .char-counter .error {
     color: #dc3545;
     font-weight: bold;
-    margin-left: 8px;
 }
 </style>

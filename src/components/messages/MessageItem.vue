@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from 'vue';
+import { onMounted, ref, nextTick, computed } from 'vue';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { updateMessage } from '@/api/message';
@@ -18,6 +18,15 @@ const editedContent = ref('');
 const editedContentType = ref('Text');
 const emit = defineEmits(['messageUpdate']);
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
+
+// Character limits (same as input component)
+const TEXT_LIMIT = 400;
+const IMAGE_LIMIT = 1000;
+const isImageMode = ref(false);
+const isOverLimit = ref(false);
+
+// Computed max length for textarea
+const maxLength = computed(() => isImageMode.value ? IMAGE_LIMIT : TEXT_LIMIT);
 
 // Configure marked for linebreaks (sync mode)
 onMounted(() => {
@@ -65,15 +74,22 @@ const resizeTextarea = (): void => {
     }
 };
 
-// Handle edit input with auto-resize
+// Handle edit input with auto-resize + limits
 const handleEditInput = async (): Promise<void> => {
     const trimmedInput = editedContent.value.trim();
 
     // Auto-grow textarea immediately
     resizeTextarea();
 
-    // Check for image URL
-    if (await isValidImageUrl(trimmedInput)) {
+    // Check for image URL and set mode
+    const isImage = await isValidImageUrl(trimmedInput);
+    isImageMode.value = isImage;
+
+    // Check limits
+    isOverLimit.value = editedContent.value.length > maxLength.value;
+
+    // Update content type
+    if (isImage && !isOverLimit.value) {
         editedContentType.value = 'Image';
     } else {
         editedContentType.value = 'Text';
@@ -84,6 +100,8 @@ const handleEditInput = async (): Promise<void> => {
 const enterEditMode = (): void => {
     editedContent.value = props.contentValue;
     editedContentType.value = props.contentType;
+    isImageMode.value = props.contentType === 'Image';
+    isOverLimit.value = false;
     isEditing.value = true;
 
     nextTick(() => {
@@ -93,6 +111,8 @@ const enterEditMode = (): void => {
 
 // Save edit
 const handleSaveEdit = async (): Promise<void> => {
+    if (isOverLimit.value || !editedContent.value.trim()) return;
+
     const updatedMessage = {
         channel_id: store.currentChannel!.id,
         timestamp: props.timestamp || 0,
@@ -178,8 +198,19 @@ const isCreator = (): boolean => {
                     rows="1"
                 />
 
+                <!-- Character Counter -->
+                <div v-if="editedContent" class="char-counter">
+                    <span :class="{ 'error': isOverLimit }">
+                        {{ editedContent.length }} / {{ maxLength }}
+                    </span>
+                </div>
+
                 <div class="edit-actions">
-                    <button @click="handleSaveEdit" class="save-btn" :disabled="!editedContent.trim()">
+                    <button
+                        @click="handleSaveEdit"
+                        class="save-btn"
+                        :disabled="isOverLimit || !editedContent.trim()"
+                    >
                         Save
                     </button>
                     <button @click="handleCancel" class="cancel-btn">
@@ -385,5 +416,23 @@ const isCreator = (): boolean => {
     width: 100%;
     height: 100%;
     border-radius: 8px;
+}
+
+.char-counter {
+    font-size: 12px;
+    color: #666;
+    text-align: right;
+    padding: 4px 10px 0;
+    margin-bottom: 8px;
+}
+
+.char-counter .error {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.save-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 </style>
