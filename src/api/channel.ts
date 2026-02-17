@@ -1,11 +1,11 @@
-import type  { ChannelInfo } from "@/types"
+import type  { Channel } from "@/types"
 import { getApiUrl, getAuthHeaders } from "@/api/apiHandler";
 import { ref} from "vue";
 import { useStore } from "@/store"
 
 const store = useStore()
 
-const GetChannelByUser = async () : Promise<ChannelInfo[]> => {
+const GetChannelByUser = async () : Promise<Channel[]> => {
     const response = await fetch(getApiUrl(`/protected/user/channels`),{
         method : "GET",
         headers : getAuthHeaders(),
@@ -16,7 +16,7 @@ const GetChannelByUser = async () : Promise<ChannelInfo[]> => {
     return await response.json()
 }
 
-const GetChannelByID = async (id: number) : Promise<ChannelInfo>=> {
+const GetChannelByID = async (id: number) : Promise<Channel>=> {
     const channels = await GetChannelByUser()
     const channel = channels.find(c => c.id === id);
 
@@ -27,7 +27,7 @@ const GetChannelByID = async (id: number) : Promise<ChannelInfo>=> {
     return channel;
 }
 
-const UpdateChannel = async (channelId : number, newChannel : ChannelInfo) => {
+const UpdateChannel = async (channelId : number, newChannel : Channel) => {
     const response = await fetch(getApiUrl(`/protected/channel/${channelId}/update_metadata`),{
         method: "PUT",
         body: JSON.stringify(newChannel),
@@ -50,7 +50,7 @@ const PostChannel = async (name: string, img: string) => {
         }),
     })
     const response = await request.json()
-    const newChannel: ChannelInfo = {
+    const newChannel: Channel = {
         id: response,
         name: name,
         img: img,
