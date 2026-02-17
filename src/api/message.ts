@@ -1,8 +1,8 @@
 import type { Message } from "@/types";
 import { getApiUrl, getAuthHeaders } from "@/api/apiHandler";
 
-const getChannelMessages = async (channelId: number): Promise<Message[]> => {
-    const response = await fetch(getApiUrl(`/protected/channel/${channelId}/messages/0`), {
+const getChannelMessages = async (channelId: number, offset: number): Promise<Message[]> => {
+    const response = await fetch(getApiUrl(`/protected/channel/${channelId}/messages/${offset}`), {
         method: "GET",
         headers: getAuthHeaders(),
     });
