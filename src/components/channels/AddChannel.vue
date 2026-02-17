@@ -11,12 +11,14 @@
     <section v-if="ShowAddChannel" class="overlay">
         <PopUpChannel @CloseAddChannel="ShowAddChannel = false"/>
     </section>
+    <section v-else>
+    </section>
 </template>
 <style scoped>
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.2);
 
   display: flex;
   align-items: center;
