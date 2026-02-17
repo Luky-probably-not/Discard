@@ -1,30 +1,43 @@
 <script setup lang="ts">
 import { GetChannelByID, UpdateChannel } from '@/api/channel';
-import { ChannelInfo } from '@/types';
-import { Theme } from '@/types';
+import type { Channel } from '@/types';
 import { ref } from 'vue';
-import ThemeEditor from '@/components/channels/ThemeEditor.vue';
+import { useStore } from '@/store';
 
+const store = useStore();
 
 const inEditionProcess = ref(false);
-const currentChanel = ref(new ChannelInfo);
-const theme = ref(new Theme);
+const currentChannelInfo = ref<Channel>({
+    id: 0,
+    name: "",
+    img: "",
+    creator: "",
+    theme: {
+        primary_color: "",
+        primary_color_dark: "",
+        accent_color: "",
+        text_color: "",
+        accent_text_color: ""
+    },
+    users: []
+})
+
+const loadChannelData = async () => {
+    currentChannelInfo.value = await GetChannelByID(store.currentChannelId);
+};
+
+loadChannelData();
+
 const switchEditionProcess = () => {
     inEditionProcess.value = !inEditionProcess.value
 }
 
-const setupChanel = async () => {
-    currentChanel.value = await GetChannelByID(props.tokenJwt!,props.channelId!);
-    theme.value = currentChanel.value.theme;
-}
-
 const editChanel = async () => {
-    await UpdateChannel(props.tokenJwt!, props.channelId!,currentChanel.value)
-    theme.value = currentChanel.value.theme;
-    switchEditionProcess();
+    if (currentChannelInfo.value) {
+        await UpdateChannel(store.currentChannelId, currentChannelInfo.value)
+        switchEditionProcess();
+    }
 }
-
-setupChanel();
 
 </script>
 <template>
@@ -32,11 +45,27 @@ setupChanel();
     <button @click="switchEditionProcess">Edit channel ?</button>
     <form v-if="inEditionProcess">
         <p>Channel's name</p>
-        <input v-model="currentChanel.name">
+        <input v-model="currentChannelInfo.name">
         <p>Channel's picture</p>
-        <img v-bind:src="currentChanel.img"/><br>
-        <input v-model="currentChanel.img"/>
-        <ThemeEditor :theme="currentChanel.theme"/>
+        <img v-bind:src="currentChannelInfo.img"/><br>
+        <input v-model="currentChannelInfo.img"/>
+
+        <!-- Theme fields inline -->
+        <p>Themes</p>
+        <label>Primary color</label>
+        <input v-model="currentChannelInfo.theme.primary_color"/>
+
+        <label>Primary color dark</label>
+        <input v-model="currentChannelInfo.theme.primary_color_dark"/>
+
+        <label>Accent color</label>
+        <input v-model="currentChannelInfo.theme.accent_color"/>
+
+        <label>Text color</label>
+        <input v-model="currentChannelInfo.theme.text_color"/>
+
+        <label>Accent text_color</label>
+        <input v-model="currentChannelInfo.theme.accent_text_color"/>
     </form>
     <button @click="editChanel">Edit channel</button>
 </template>
