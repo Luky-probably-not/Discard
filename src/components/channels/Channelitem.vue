@@ -1,12 +1,11 @@
 <script setup lang="ts">
-    import { useStore } from "@/store";
+import { useStore } from "@/store";
 import { type Channel } from "@/types";
+const store = useStore();
 
-    const store = useStore();
-
-    defineProps<{
-        channel: Channel
-    }>()
+defineProps<{
+    channel: Channel
+}>()
 </script>
 
 <template>

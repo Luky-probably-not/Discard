@@ -6,9 +6,8 @@ import PopUpEditChannel from '@/components/channels/PopUpEditChannel.vue';
 
 </script>
 <template>
-    <h1>ChannelInfoLayout</h1>
-    <AddUser/>
     <PopUpEditChannel/>
+    <AddUser/>
     <InfoChannel/>
 </template>
 <style scoped>

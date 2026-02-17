@@ -23,7 +23,6 @@ const addUser = async () => {
 
 </script>
 <template>
-    <p>Add User Component</p>
     <input type="text" v-model="userName">
     <button @click="addUser">addUser</button>
 </template>

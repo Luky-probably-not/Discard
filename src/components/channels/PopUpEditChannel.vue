@@ -1,14 +1,26 @@
 <script setup lang="ts">
 import { UpdateChannel } from '@/api/channel';
 import { useStore } from '@/store';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const store = useStore();
 
 const inEditionProcess = ref(false)
-const currentChannelInfo = store.currentChannel!;
+let currentChannelInfo = store.currentChannel!;
+
+const currentChannelWatcher = computed(() => {
+    return store.currentChannel!
+})
+
+watch(
+    currentChannelWatcher,
+    () => {
+        reloadChannel();
+        inEditionProcess.value = false;
+    })
 
 const switchEditionProcess = () => {
+    reloadChannel();
     inEditionProcess.value = !inEditionProcess.value
 }
 
@@ -17,9 +29,12 @@ const editChanel = async () => {
     switchEditionProcess();
 }
 
-</script>
+const reloadChannel = () => {
+    currentChannelInfo = store.currentChannel!;
+}
+
+</script>   
 <template>
-    <p>Pop Up Channel Component</p>
     <button @click="switchEditionProcess">Edit channel ?</button>
     <form v-if="inEditionProcess">
         <p>Channel's name</p>
@@ -64,8 +79,8 @@ const editChanel = async () => {
         <div v-else>
             <input/>
         </div>
+        <button @click="editChanel">Edit channel</button>
     </form>
-    <button @click="editChanel">Edit channel</button>
 </template>
 <style scoped>
 img {
