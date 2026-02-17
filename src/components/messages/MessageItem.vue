@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref, watch, nextTick  } from 'vue';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { updateMessage } from '@/api/message';
 import { useStore } from '@/store';
 
@@ -15,6 +17,20 @@ const isEditing = ref(false);
 const editedContent = ref(props.contentValue);
 const editedContentType = ref(props.contentType);
 const emit = defineEmits(['messageUpdate']);
+const textareaRef = ref<HTMLTextAreaElement | null>(null);
+
+onMounted(() => {
+    marked.setOptions({
+        breaks: true,
+        async: false
+    });
+});
+
+const renderMarkdown = (text: string | undefined) => {
+    if (!text) return '';
+    const html = marked.parse(text) as string;
+    return DOMPurify.sanitize(html);
+};
 
 const isValidImageUrl = async (url: string) => {
     try {
@@ -29,12 +45,29 @@ const isValidImageUrl = async (url: string) => {
 const handleEditInput = async () => {
     const trimmedInput = editedContent.value!.trim();
 
+    // Auto-grow textarea
+    if (textareaRef.value) {
+        textareaRef.value.style.height = 'auto';
+        textareaRef.value.style.height = textareaRef.value.scrollHeight + 'px';
+    }
+
     if (await isValidImageUrl(trimmedInput)) {
         editedContentType.value = 'Image';
     } else {
         editedContentType.value = 'Text';
     }
 };
+
+watch(isEditing, (newVal) => {
+    if (newVal && textareaRef.value) {  // When entering edit mode AND textarea exists
+        nextTick(() => {                 // Wait for Vue to finish DOM updates
+            if (textareaRef.value) {
+                textareaRef.value.style.height = 'auto';     // Reset
+                textareaRef.value.style.height = `${textareaRef.value.scrollHeight}px`;  // Resize
+            }
+        });
+    }
+});
 
 const handleSaveEdit = async () => {
     const updatedMessage = {
@@ -79,23 +112,25 @@ const isCreator = () => {
         <div class="message-content">
             <div v-if="!isEditing">
                 <div v-if="props.contentType === 'Image'" class="content-image">
-                    <img :src="props.contentValue" :alt="'Unable to load image'" />
+                    <img :src="props.contentValue" :alt="'*Unable to load image*'" />
                 </div>
                 <div v-else class="content-text">
-                    {{ props.contentValue }}
+                    <div v-html="renderMarkdown(props.contentValue)"></div>
                 </div>
             </div>
             <div v-else class="edit-form">
                 <div v-if="editedContentType === 'Image'" class="edit-preview">
                     <img :src="editedContent" :alt="author" />
                 </div>
-                <input
+                <textarea
+                    ref="textareaRef"
                     v-model="editedContent"
                     @input="handleEditInput"
                     type="text"
                     placeholder="Edit message or paste an image URL..."
                     class="edit-input"
-                >
+                    rows="1"
+                ></textarea>
                 <div class="edit-actions">
                     <button @click="handleSaveEdit" class="save-btn">Save</button>
                     <button @click="handleCancel" class="cancel-btn">Cancel</button>

@@ -20,7 +20,7 @@ const connectWebSocket = async () => {
     messages.value = [];
 
     // Load initial messages from API
-    const initialMessages = await getChannelMessages(store.currentChannel!.id);
+    const initialMessages = await getChannelMessages(store.currentChannel!.id, 0);
     messages.value = initialMessages;
 
     ws = new WebSocket(`${apiBaseUrl}/ws/channel/${store.currentChannel!.id}/token/${store.jwtToken}`);
@@ -49,7 +49,7 @@ onUnmounted(() => {
 });
 
 const reloadMessages = async () => {
-    const initialMessages = await getChannelMessages(store.currentChannel!.id);
+    const initialMessages = await getChannelMessages(store.currentChannel!.id, 0);
     messages.value = initialMessages;
 }
 

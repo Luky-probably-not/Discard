@@ -7,6 +7,7 @@ const messageInput = ref('');
 const preview = ref('');
 const contentType = ref('Text');
 const store = useStore();
+const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
 // Load draft when channel changes
 watch(() => store.currentChannel?.id, (channelId) => {
@@ -22,6 +23,12 @@ const handleInput = async () => {
     // Save draft to store
     if (store.currentChannel) {
         store.setDraftForChannel(store.currentChannel.id, messageInput.value);
+    }
+
+    // Auto-grow textarea
+    if (textareaRef.value) {
+        textareaRef.value.style.height = 'auto';
+        textareaRef.value.style.height = textareaRef.value.scrollHeight + 'px';
     }
 
     if (await isValidImageUrl(trimmedInput)) {
@@ -65,12 +72,14 @@ const handleSubmit = async (e: Event) => {
             <img :src="preview" :alt="messageInput" />
         </div>
         <form @submit="handleSubmit">
-            <input
+            <textarea
+                ref="textareaRef"
                 v-model="messageInput"
                 @input="handleInput"
                 type="text"
                 placeholder="Type a message or paste an image URL..."
-            >
+                rows="1"
+            ></textarea>
             <input type="submit" value="Send">
         </form>
     </div>
@@ -114,4 +123,25 @@ input[type="submit"]:hover {
     max-width: 300px;
     border-radius: 5px;
 }
+
+textarea {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 40px;
+    max-height: 300px; /* Optional max height */
+    resize: none; /* Disable manual resizing */
+    overflow: hidden; /* Hide scrollbars */
+    line-height: 1.4;
+    font-family: inherit;
+    font-size: inherit;
+    box-sizing: border-box;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
 </style>
