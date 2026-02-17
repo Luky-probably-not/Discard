@@ -33,9 +33,8 @@ const reloadChannel = () => {
     currentChannelInfo = store.currentChannel!;
 }
 
-</script>
+</script>   
 <template>
-    <p>Pop Up Channel Component</p>
     <button @click="switchEditionProcess">Edit channel ?</button>
     <form v-if="inEditionProcess">
         <p>Channel's name</p>
@@ -80,8 +79,8 @@ const reloadChannel = () => {
         <div v-else>
             <input/>
         </div>
+        <button @click="editChanel">Edit channel</button>
     </form>
-    <button @click="editChanel">Edit channel</button>
 </template>
 <style scoped>
 img {
