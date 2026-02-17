@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import ChannelList from '@/components/ChannelList.vue';
-import UserList from '@/components/UserList.vue';
-
+    import UserChannelsLayout from '@/components/UserChannelsLayout.vue';
+    import ChannelInfoLayout from '@/components/ChannelInfoLayout.vue';
+    import ChatLayout from '@/components/ChatLayout.vue';
+    import { selectedChannelID } from '@/api/channel';
 </script>
 <template>
-    <ChannelList />
-    <UserList />
+    <UserChannelsLayout />
+    <ChatLayout />
+    <ChannelInfoLayout v-if="selectedChannelID !== 0" />
 </template>
 <style scoped>
 </style>

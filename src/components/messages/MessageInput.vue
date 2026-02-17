@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { createMessage } from '@/ts/messages';
-import { connectedUser } from '@/ts/connectedUser';
+import { createMessage } from '@/api/message';
+import { useStore } from '@/store';
 
 const messageInput = ref('');
 const preview = ref('');
 const contentType = ref('Text');
-const user = connectedUser();
-const token = user.tokenJwt;
-const channelId = 273;
+const store = useStore();
+
 
 const isValidImageUrl = async (url: string) => {
     try {
@@ -37,7 +36,7 @@ const handleSubmit = async (e: Event) => {
 
     if (!messageInput.value.trim()) return;
 
-    await createMessage(token, channelId, contentType.value, messageInput.value);
+    await createMessage(store.currentChannelId, contentType.value, messageInput.value);
     messageInput.value = '';
     preview.value = '';
     contentType.value = 'Text';

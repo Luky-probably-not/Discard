@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { addUserToChannel } from '@/ts/users';
+import { addUserToChannel } from '@/api/user';
+import { useStore } from '@/store';
 import { ref } from 'vue';
-const props = defineProps({
-    tokenJwt : String,
-    channelId : Number
-})
+
+const store = useStore();
+
 const userName = ref("")
 
 const addUser = async () => {
-    if (userName.value == undefined || userName.value == "")        
+    if (userName.value == undefined || userName.value == "")
     {
         console.log("userName null");
         return;
-    }    
-    if (props.channelId! == undefined || props.channelId! == -1)
+    }
+    if (store.currentChannelId == undefined || store.currentChannelId == -1)
     {
         console.log("password null");
         return;
-    }   
-    await addUserToChannel(props.tokenJwt!, userName.value, props.channelId!)
+    }
+    await addUserToChannel(userName.value, store.currentChannelId)
 }
 
 </script>

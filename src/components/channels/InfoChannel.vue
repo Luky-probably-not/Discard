@@ -1,25 +1,22 @@
 <script setup lang="ts">
-import { GetChannelByID } from '@/ts/channel';
-import { getOneUserByName } from '@/ts/users';
+import { GetChannelByID } from '@/api/channel';
+import { getOneUserByName } from '@/api/user';
+import { useStore } from '@/store';
 import { ref, type Ref } from 'vue';
 
-const props = defineProps({
-    tokenJwt : String,
-    channelId : Number
-});
+const store = useStore();
 
 const channelUsers : Ref<Array<string>, Array<string>> = ref([]);
-const currentChannel = props.channelId!;
 
 const loadChannelUsers = async () =>{
-    if (props.tokenJwt != "")
+    if (store.jwtToken != "")
     {
-        channelUsers.value = (await GetChannelByID(props.tokenJwt!, currentChannel)).users;
+        channelUsers.value = (await GetChannelByID(store.currentChannelId)).users;
         for (let idx = 0; idx < channelUsers.value.length; idx++){
-            const displayedName = await getOneUserByName(props.tokenJwt!, channelUsers.value[idx]!)            
+            const displayedName = await getOneUserByName(channelUsers.value[idx]!)
             channelUsers.value[idx] = displayedName?.display_name ?? channelUsers.value[idx];
         }
-        
+
     }
 }
 loadChannelUsers();

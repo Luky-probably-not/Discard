@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import { connectedUser } from '@/ts/connectedUser';
-import { login } from '@/ts/users';
+import { login } from '@/api/user';
 import { ref } from 'vue';
 
-const props = defineProps({
-    token : String,
-    store : connectedUser
-})
 import { useRouter } from 'vue-router'
+import { useStore } from '@/store';
 
 const router = useRouter()
 const userName = ref("")
 const password = ref("")
 
+const store = useStore();
+
 const loginUser = async () => {
-    if (userName.value == undefined || userName.value == "")        
+    if (userName.value == undefined || userName.value == "")
     {
         console.log("userName null");
         return;
-    }    
+    }
     if (password.value == undefined || password.value == "")
     {
         console.log("password null");
         return;
-    }   
-    let token = await login(userName.value,password.value)
-    props.store!.addUser(token,userName.value);
+    }
+    const token = await login(userName.value,password.value)
+    store.setAuthInfo(userName.value, token,);
     console.log(token);
     if (token && token !== "") {
         router.push({ name: "home" })

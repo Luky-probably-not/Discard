@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import MessageItem from '@/components/messages/MessageItem.vue';
-import { Message } from '@/ts/domain/message';
-import { connectedUser } from '@/ts/connectedUser';
+import type { Message } from '@/types';
 import { ref, onUnmounted, watch } from 'vue';
-import { getChannelMessages, createMessage } from '@/ts/messages';
+import { getChannelMessages } from '@/api/message';
+import { useStore } from '@/store';
 
 const messages = ref<Message[]>([]);
 let ws: WebSocket | null = null;
 const wsConnEstablished = ref(false);
-const user = connectedUser();
-const token = user.tokenJwt
+const store = useStore();
+
 const channelId = 273
 
 const connectWebSocket = async () => {
@@ -20,10 +20,10 @@ const connectWebSocket = async () => {
     messages.value = [];
 
     // Load initial messages from API
-    const initialMessages = await getChannelMessages(token, channelId);
+    const initialMessages = await getChannelMessages(store.currentChannelId);
     messages.value = initialMessages;
 
-    ws = new WebSocket(`/ws/channel/${channelId}/token/${token}`);
+    ws = new WebSocket(`/ws/channel/${channelId}/token/${store.jwtToken}`);
 
     ws.onopen = () => {
         wsConnEstablished.value = true;

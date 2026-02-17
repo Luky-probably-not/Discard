@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { AddChannel, PrintPopUpChannel} from '@/ts/channel';
-import { connectedUser } from '@/ts/connectedUser';
+import { PostChannel, PrintPopUpChannel} from '@/api/channel';
 import { ref } from 'vue';
 
-const user = connectedUser()
 const name = ref("")
 const img = ref("")
 
 const submitForm = async () => {
-  await AddChannel(user.tokenJwt, name.value, img.value)
+  await PostChannel(name.value, img.value)
   PrintPopUpChannel.value = false
 }
 </script>

@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import { GetChannelByID, UpdateChannel } from '@/ts/channel';
-import { ChannelInfo } from '@/ts/domain/channel';
-import { Theme } from '@/ts/domain/theme';
+import { GetChannelByID, UpdateChannel } from '@/api/channel';
+import { ChannelInfo } from '@/types';
+import { Theme } from '@/types';
 import { ref } from 'vue';
-import ThemeEditor from './ThemeEditor.vue';
+import ThemeEditor from '@/components/channels/ThemeEditor.vue';
 
-
-const props = defineProps({
-    tokenJwt : String,
-    channelId : Number
-})
 
 const inEditionProcess = ref(false);
 const currentChanel = ref(new ChannelInfo);
@@ -19,7 +14,7 @@ const switchEditionProcess = () => {
 }
 
 const setupChanel = async () => {
-    currentChanel.value = await GetChannelByID(props.tokenJwt!,props.channelId!);    
+    currentChanel.value = await GetChannelByID(props.tokenJwt!,props.channelId!);
     theme.value = currentChanel.value.theme;
 }
 

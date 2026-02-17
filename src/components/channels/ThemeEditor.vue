@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Theme } from '@/ts/domain/theme';
+import { Theme } from '@/types';
 
 defineProps({
     theme : Theme
@@ -44,7 +44,7 @@ defineProps({
         <div v-else>
             <input/>
         </div>
-        
+
     </li>
 </template>
 <style scoped>

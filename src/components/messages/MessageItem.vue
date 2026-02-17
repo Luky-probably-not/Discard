@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { updateMessage } from '@/ts/messages';
-import { connectedUser } from '@/ts/connectedUser';
+import { updateMessage } from '@/api/message';
 
 const props = defineProps({
     contentType: String,
@@ -9,7 +8,6 @@ const props = defineProps({
     timestamp: Number,
 });
 
-const user = connectedUser();
 
 const handleModerate = async () => {
     const updatedMessage = {
@@ -22,7 +20,7 @@ const handleModerate = async () => {
         }
     };
 
-    await updateMessage(user.tokenJwt, updatedMessage);
+    await updateMessage(updatedMessage);
 };
 
 const formatTimestamp = (timestamp: number | undefined) => {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PopUpChannel from '@/components/channels/PopUpChannel.vue';
-import { PrintPopUpChannel } from '@/ts/channel';
+import { PrintPopUpChannel } from '@/api/channel';
+
 </script>
 <template>
     <button @click="PrintPopUpChannel = !PrintPopUpChannel">+</button>
