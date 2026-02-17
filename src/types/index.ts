@@ -1,4 +1,4 @@
-export interface ChannelInfo {
+export interface Channel {
     id: number
     name: string
     img: string

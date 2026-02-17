@@ -1,6 +1,9 @@
 import type  { ChannelInfo } from "@/types"
 import { getApiUrl, getAuthHeaders } from "@/api/apiHandler";
-import { ref, type Ref } from "vue";
+import { ref} from "vue";
+import { useStore } from "@/store"
+
+const store = useStore()
 
 const GetChannelByUser = async () : Promise<ChannelInfo[]> => {
     const response = await fetch(getApiUrl(`/protected/user/channels`),{
@@ -61,22 +64,18 @@ const PostChannel = async (name: string, img: string) => {
         },
         users: []
     }
-    channels.value.push(newChannel)
-    selectedChannelID.value = response
+    store.userChannels.push(newChannel)
+    store.currentChannelId = response
     return
 }
 
-const selectedChannelID = ref<number>(0)
 const PrintPopUpChannel = ref(false)
-const channels: Ref<ChannelInfo[]> = ref([])
 
 export {
     GetChannelByID,
     GetChannelByUser,
     UpdateChannel,
     PostChannel,
-    channels,
-    selectedChannelID,
     PrintPopUpChannel,
 
 }
