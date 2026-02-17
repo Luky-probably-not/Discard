@@ -7,16 +7,37 @@
 
 <template>
     <section class="right-panel">
-        <AddChannel />
-        <ChannelList />
-        <UserProfile />
-    </section>
+    <AddChannel class="top"/>
+    <ChannelList class="middle"/>
+    <UserProfile class="bottom"/>
+  </section>
 </template>
 
 <style scoped>
 .right-panel {
   display: flex;
   flex-direction: column;
-  gap: 12px; 
+  height: 100vh;   /* hauteur écran */
+}
+
+.top {
+  flex-shrink: 0;
+}
+
+.middle {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.bottom {
+  flex-shrink: 0;
+}
+.middle::-webkit-scrollbar {
+  width: 6px;
+}
+
+.middle::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
 }
 </style>
