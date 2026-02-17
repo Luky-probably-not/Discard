@@ -5,19 +5,19 @@
 
 </script>
 
-<template>
+<template class="right-panel">
     <section class="right-panel">
-    <AddChannel class="top"/>
-    <ChannelList class="middle"/>
-    <UserProfile class="bottom"/>
-  </section>
+        <AddChannel class="top"/>
+        <ChannelList class="middle"/>
+        <UserProfile class="bottom"/>
+    </section>
 </template>
 
 <style scoped>
 .right-panel {
   display: flex;
   flex-direction: column;
-  height: 100vh;   /* hauteur écran */
+  flex :1; 
 }
 
 .top {
