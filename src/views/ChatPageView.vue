@@ -30,18 +30,17 @@ const store = useStore();
   display: flex;
   max-height: 98dvh;
   gap: 1rem;
-  padding: 1rem;
   box-sizing: border-box;
 }
 
 .app-layout > *:nth-child(1) { /* Left: UserChannelsLayout */
-  flex: 0 0 25%;
-  max-width: 25%;
+  flex: 0 0 20%;
+  max-width: 20%;
 }
 
 .app-layout > *:nth-child(2) { /* Center: ChatLayout */
-  flex: 0 0 50%;
-  max-width: 50%;
+  flex: 0 0 54%;
+  max-width: 54%;
 }
 
 .app-layout > *:nth-child(3) { /* Right: ChannelInfoLayout */

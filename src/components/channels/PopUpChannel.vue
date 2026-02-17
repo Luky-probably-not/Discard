@@ -20,7 +20,7 @@ const submitForm = async () => {
         <form @submit.prevent="submitForm" class="popup-form">
             <input type="text" v-model="name" placeholder="Channel Name" required />
             <input type="text" v-model="img" placeholder="Image URL" />
-            <button type="submit">Create</button>
+            <button type="submit" class="btn-style btn-submit">Create</button>
         </form>
     </section>
 </template>

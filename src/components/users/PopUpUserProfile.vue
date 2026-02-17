@@ -38,7 +38,7 @@
                     <input v-model="userInfo.display_name" type="text"/>
                     <input v-model="userInfo.img" type="text" />
                     <input v-model="userInfo.status" type="text" />
-                    <button type="submit">Update</button>
+                    <button type="submit" class="btn-style btn-submit">Update</button>
                 </section>
             </section>
         </form>

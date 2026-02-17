@@ -16,7 +16,7 @@
 <template>
     <section class="channel-list">
         <article v-for="channel in store.userChannels" :key="channel.id">
-        <Channelitem :channel="channel" />
+            <Channelitem :channel="channel" />
         </article>
   </section>
 
@@ -26,5 +26,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px; 
+    background-color: var(--primary-color);
+    margin: 4px 0;
     }
 </style>

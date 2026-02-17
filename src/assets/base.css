@@ -66,22 +66,36 @@
     font-family: var(--text-font-family);
 }
 
-.popup-form button[type="submit"] {
+.btn-style {
     background-color: var(--accent-color);
     box-shadow: var(--box-shadow-intern);
     border-radius: 5px;
     border: var(--border-color);
-    padding: 5px;
     font-weight: var(--boutton-font-weight);
     font-size: medium;
     font-family: var(--text-font-family);
     color: var(--text-color);
 }
 
-.popup-form button[type="submit"]:hover {
+.btn-submit {
+    padding: 5px;
+}
+
+.btn-style:hover {
     filter: brightness(90%);
 }
 
-.popup-form button[type="submit"]:active {
+.btn-style:active {
     box-shadow: 0px 0px 0px rgba(0,0,0,1);
 }
+
+.btn-popup {
+    padding: 5px 25%;
+}
+
+.btn-bar {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    background-color: var(--primary-color);
+}   

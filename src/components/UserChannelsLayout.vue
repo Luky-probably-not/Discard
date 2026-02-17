@@ -5,8 +5,8 @@
 
 </script>
 
-<template class="right-panel">
-    <section class="right-panel">
+<template>
+    <section class="left-panel">
         <AddChannel class="top"/>
         <ChannelList class="middle"/>
         <UserProfile class="bottom"/>
@@ -14,10 +14,11 @@
 </template>
 
 <style scoped>
-.right-panel {
+.left-panel {
   display: flex;
   flex-direction: column;
   flex :1; 
+  border: var(--border-color);
 }
 
 .top {

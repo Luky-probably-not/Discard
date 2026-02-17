@@ -12,10 +12,21 @@ const changeChannel = async(id : number) => {
     store.currentChannel = await GetChannelByID(id);
 }
 
+const setHoverPos = (e: MouseEvent) => {
+  const el = e.currentTarget as HTMLElement;
+  const rect = el.getBoundingClientRect();
+
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  el.style.setProperty('--x', `${x}px`);
+  el.style.setProperty('--y', `${y}px`);
+}
+
 </script>
 
 <template>
-    <section class="channel-item" @click="changeChannel(channel.id)">
+    <section class="channel-item" :class="{ active: store.currentChannel?.id === channel.id }" @mousemove="e => setHoverPos(e)" @click="changeChannel(channel.id)">
         <img :src="channel.img" alt="channel picture" />
         <p>{{ channel.name }}</p>
     </section>
@@ -26,24 +37,46 @@ const changeChannel = async(id : number) => {
   display: flex;
   align-items: center;
   gap: 12px;
-
-  padding: 10px 14px;
+  margin: 0 5px;
+  padding: 2px 14px;
+  margin: 0 15% 0 5%;
   border-radius: 8px;
   cursor: pointer;
+  border: var(--border-color);
+  background-color: var(--primary-color);
+  box-shadow: var(--box-shadow-intern);
+  filter: brightness(95%);
 }
 .channel-item p {
   flex: 1;
   margin: 0;
-  font-size: 15px;
+  font-size: medium;
+  font-family: var(--text-font-family);
   font-weight: 500;
 }
-
+.channel-item.active {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    #000
+  );
+  color: white;
+  box-shadow:0 0 0 0 transparent;
+}
 .channel-item img {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: var(--border-color);
 }
 
+.channel-item:hover {
+  background: radial-gradient(
+    circle at var(--x) var(--y),
+    #000,
+    var(--primary-color)
+  );
+  color: white;
+}
 </style>
