@@ -77,7 +77,6 @@ export const useStore = defineStore("main", () => {
             localStorage.setItem('token_expiry', tokenExpiry.value.toString());
 
             startRefreshTimer();
-            console.log("TEST: token refresh sucessful! (check pinia to be sure)")
             return true;
         } catch (error) {
             console.error('Token refresh failed:', error);
