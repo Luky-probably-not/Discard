@@ -56,7 +56,7 @@
     border-radius: 5px;
 }
 
-.popup-form input[type="text"] {
+.popup-form input[type="text"], .popup-form input[type="password"] {
     background-color: var(--transparent-color);
     border-radius: 5px;
     border: var(--border-color);
@@ -97,4 +97,14 @@
     justify-content: center;
     padding: 15px;
     background-color: var(--primary-color);
-}   
+}
+
+.window {
+    background-color: var(--primary-color);
+    border: var(--border-color);
+    border-radius: 5px;
+}
+
+body{
+    background-color: var(--primary-color);
+}

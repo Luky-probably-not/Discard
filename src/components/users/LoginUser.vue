@@ -32,17 +32,33 @@ const loginUser = async () => {
 </script>
 
 <template>
-    <form @submit.prevent="loginUser">
-        <label>Username : </label>
-        <input type="text" v-model="userName">
+    <section class="window">
+        <span class="headbar"></span>
+        <form @submit.prevent="loginUser" class="popup-form">
+            <label>Username : </label>
+            <input type="text" v-model="userName">
 
-        <label>Password : </label>
-        <input type="password" v-model="password">
+            <label>Password : </label>
+            <input type="password" v-model="password">
 
-        <button type="submit">+</button>
-    </form>
+            <button type="submit" class="btn-style btn-submit">login</button>
+        </form>
+    </section>
 </template>
 
 
 <style scoped>
+.window {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.window .popup-form {
+    padding:50px 150px;
+}
+
+.headbar {
+    height: 50px;
+}
 </style>
