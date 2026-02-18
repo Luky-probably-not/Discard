@@ -21,7 +21,7 @@
 .left-panel {
   display: flex;
   flex-direction: column;
-  flex :1; 
+  flex :1;
   gap: 15px;
 }
 
@@ -59,8 +59,4 @@
   border: var(--border-color);
   border-radius: 5px;
 }
-
-.shadow {
-  box-shadow: var(--box-shadow-intern);
-  }
 </style>

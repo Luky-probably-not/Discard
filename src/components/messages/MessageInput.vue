@@ -112,7 +112,9 @@ const handleKeydown = (e: KeyboardEvent) => {
 </script>
 
 <template>
-    <div class="message-input-container">
+
+    <section class="message-input-container">
+        <span class="headbar"></span>
         <!-- Preview -->
         <div v-if="preview" class="preview">
             <img :src="preview" :alt="messageInput" />
@@ -141,7 +143,7 @@ const handleKeydown = (e: KeyboardEvent) => {
                 {{ messageInput.length }} / {{ maxLength }}
             </span>
         </div>
-    </div>
+    </section>
 </template>
 
 <style scoped>
@@ -213,5 +215,9 @@ textarea:focus {
 .char-counter .error {
     color: #dc3545;
     font-weight: bold;
+}
+
+.headbar {
+  height: 20px;
 }
 </style>

@@ -3,14 +3,15 @@ import MessageList from '@/components/messages/MessageList.vue';
 import MessageInput from '@/components/messages/MessageInput.vue';
 </script>
 <template class="middle-panel">
-        <MessageList class="top"/>
-        <MessageInput class="bottom"/>
+    <MessageList class="top shadow" />
+    <MessageInput class="bottom shadow"/>
 </template>
 <style scoped>
 .middle-panel {
   display: flex;
   flex-direction: column;
-  flex: 1;  
+  flex: 1;
+  gap: 15px;
 }
 
 .top {
@@ -26,7 +27,6 @@ import MessageInput from '@/components/messages/MessageInput.vue';
 }
 
 .top::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
   border-radius: 4px;
 }
 </style>

@@ -8,6 +8,7 @@ import { useStore } from '@/store';
 const apiBaseUrl = import.meta.env.VITE_API_URL
 
 const messages = ref<Message[]>([]);
+const channelName = ref<string>("")
 const hasMoreMessages = ref(true);
 const currentOffset = ref(0);
 const showLoadMore = ref(false); // NEW: Track scroll position
@@ -101,6 +102,7 @@ connectWebSocket();
 
 watch(() => store.currentChannel!.id, () => {
     connectWebSocket();
+    channelName.value = store.currentChannel!.name
 });
 
 onUnmounted(() => {
@@ -111,7 +113,9 @@ onUnmounted(() => {
 </script>
 
 <template>
+    <span class="headbar"><p>{{ channelName }}</p></span>
     <section class="message-list" ref="messageListRef" @scroll="handleScroll">
+
         <div v-if="showLoadMore" class="load-more-btn-container">
             <button @click="loadMoreMessages" class="load-more-btn">/\</button>
         </div>
@@ -153,5 +157,9 @@ onUnmounted(() => {
 
 .load-more-btn:hover {
     background: #0056b3;
+}
+
+.headbar {
+  height: 40px;
 }
 </style>
