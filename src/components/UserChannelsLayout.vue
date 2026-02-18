@@ -21,7 +21,7 @@
 .left-panel {
   display: flex;
   flex-direction: column;
-  flex:1; 
+  flex:1;
   gap: 15px;
 }
 
@@ -29,8 +29,7 @@
   display: flex;
   flex-direction: column;
   flex: 0 0 85%;
-  max-height: 85%;
-  min-height: 85%;
+  height: 84vh;
   overflow: hidden;
   padding-bottom: 15px;
 }

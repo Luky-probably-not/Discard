@@ -27,20 +27,55 @@ loadCreatorCheck()
 
 </script>
 <template>
-    <section class="channel-info">
-        <img v-bind:src="store.currentChannel!.img">
-        <article v-if="isCreator" class="toolbar">
-            <button @click="InEditingProcess = true" class="edit-button">Edit channel</button>
-            <section v-if="InEditingProcess" class="overlay">
-                <PopUpEditChannel
-                    @close-edition="InEditingProcess = false"/>
-            </section>
-        </article>
-        <AddUser :is-creator="isCreator"/>
-        <InfoChannel :is-creator="isCreator"/>
+    <section class="right-panel">
+        <section class="channel-info window shadow">
+            <section class="headbar"></section>
+            <img v-bind:src="store.currentChannel!.img">
+            <article v-if="isCreator" class="mod-options">
+                <section class="edit-channel">
+                    <button @click="InEditingProcess = true" class="btn-style btn-popup">Edit channel</button>
+                    <section v-if="InEditingProcess" class="overlay">
+                        <PopUpEditChannel
+                            @close-edition="InEditingProcess = false"/>
+                    </section>
+                </section>
+                <AddUser :is-creator="isCreator" class="add-user"/>
+            </article>
+        </section>
+        <section class="channel-users window shadow">
+            <InfoChannel :is-creator="isCreator" class="bottom"/>
+        </section>
     </section>
 </template>
 <style scoped>
+
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+    height: 95vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.channel-info {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 85%;
+    max-height: 45vh;
+    overflow: hidden;
+    padding-bottom: 15px;
+}
+
+.channel-users {
+        display: flex;
+    flex-direction: column;
+    flex: 0 0 85%;
+    max-height: 45vh;
+    overflow: hidden;
+    padding-bottom: 15px;
+}
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -52,21 +87,10 @@ loadCreatorCheck()
 
   z-index: 1000;
 }
-.toolbar {
-  display: flex;
-  justify-content: right;
-  margin-right: 130px;
-}
-
-button {
-  height: auto;
-}
-
-.channel-info img {
-    width: auto;
-    height:100%;
-    max-height: 250px;
-    max-width: 350px;
+.edit-channel {
+    padding: 10px;
+    padding-left: 50px;
+    flex-shrink: 0;
 }
 
 .edit-button {
@@ -78,5 +102,28 @@ button {
     cursor: pointer;
     font-size: 0.8em;
     transition: background-color 0.2s;
+}
+button {
+  height: auto;
+}
+.headbar {
+    flex-shrink: 0;
+    height: 20px;
+}
+
+.add-user {
+    padding-left: 50px;
+}
+
+.right-panel img {
+    width: auto;
+    padding: 5px;
+    max-height: 97%;
+    max-width: 97%;
+}
+
+
+.bottom {
+    min-height: 0;
 }
 </style>

@@ -10,11 +10,13 @@ import MessageInput from '@/components/messages/MessageInput.vue';
 .middle-panel {
   display: flex;
   flex-direction: column;
-  flex: 1;  
+  flex: 1;
+  max-height: 100vh;
 }
 
 .top {
   flex: 1;
+  max-height: 89vh;
 }
 
 .bottom {

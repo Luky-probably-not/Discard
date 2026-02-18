@@ -102,7 +102,7 @@ const setHoverPos = (e: MouseEvent) => {
 }
 
 .btn-style {
-    background-color: var(--transparent-color);
+    background-color: transparent;
     color: var(--text-color);
 }
 </style>
