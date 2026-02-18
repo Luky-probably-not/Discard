@@ -100,6 +100,3 @@ export {
     GetChannelByUser, LeaveChannel, PostChannel, RemoveUserFromChannel, UpdateChannel,
     DeleteChannel
 };
-
-
-//test

@@ -98,6 +98,4 @@ const setHoverPos = (e: MouseEvent) => {
     background-color: var(--transparent-color);
     color: var(--text-color);
 }
-
-
 </style>
