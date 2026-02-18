@@ -21,14 +21,18 @@
 .left-panel {
   display: flex;
   flex-direction: column;
-  height: 100%; 
+  flex:1; 
   gap: 15px;
 }
 
 .channels {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 0 0 85%;
+  max-height: 85%;
+  min-height: 85%;
+  overflow: hidden;
+  padding-bottom: 15px;
 }
 
 .top {
@@ -36,25 +40,11 @@
 }
 
 .middle {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 75vh;
-  max-height: 75vh;
+  flex: 0 0 90%;
 }
 
 .bottom {
   flex-shrink: 0;
 }
-.middle::-webkit-scrollbar {
-  width: 6px;
-}
 
-.middle::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
-  border-radius: 4px;
-}
-
-.shadow {
-  box-shadow: var(--box-shadow-intern);
-  }
 </style>
