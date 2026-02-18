@@ -6,16 +6,20 @@
     --accent-text-color: #ffffff;
 
     --text-font-family: 'Segoe UI', 'Arial Rounded MT Bold', 'Helvetica Rounded', sans-serif;
-    --boutton-font-weight: 600;
+    --button-font-weight: 600;
     --border-color: 2px solid #000000;
 
     --box-shadow-intern: -3px 3px 0px rgba(0,0,0,1);
     --box-shadow-extern: -10px 10px 5px rgba(0,0,0,1);
 
-    --boutton-primary-color: #eee;
-    --transparent-color: transparent;
+    --button-primary-color: #eee;
     --red-color:#e74c3c;
     --white-color: #fff;
+}
+body{
+    font-family: var(--text-font-family);
+    color: var(--text-color);
+    background-color: var(--white-color);
 }
 .headbar {
     width: 100%;
@@ -30,17 +34,16 @@
 .headbar p {
     margin-left: 15px;
     font-size: 1.2em;
-    font-weight: var(--boutton-font-weight);
+    font-weight: var(--button-font-weight);
     color: var(--accent-text-color);
-    font-family: var(--text-font-family);
 }
 
 .close-btn {
     position: absolute;
     right: 8px;
-    background: var(--transparent-color);
+    background: transparent;
     border: none;
-    color: var(--boutton-primary-color);
+    color: var(--button-primary-color);
     font-size: 1.2em;
     cursor: pointer;
 }
@@ -58,7 +61,7 @@
 }
 
 .popup-form input[type="text"], .popup-form input[type="password"] {
-    background-color: var(--transparent-color);
+    background-color: transparent;
     border-radius: 5px;
     border: var(--border-color);
     padding: 5px;
@@ -71,10 +74,11 @@
     box-shadow: var(--box-shadow-intern);
     border-radius: 5px;
     border: var(--border-color);
-    font-weight: var(--boutton-font-weight);
+    font-weight: var(--button-font-weight);
     font-size: medium;
     font-family: var(--text-font-family);
     color: var(--text-color);
+    cursor: pointer;
 }
 
 .btn-submit {
@@ -110,8 +114,24 @@
 
 .shadow {
   box-shadow: var(--box-shadow-intern);
-  }
+}
 
-body{
-    background-color: var(--white-color);
+textarea {
+    flex: 1;
+    padding: 10px;
+    border:transparent;
+    background-color: transparent;
+    border-radius: 5px;
+    min-height: 40px;
+    max-height: 200px;
+    resize: none;
+    overflow: hidden;
+    line-height: 1.4;
+    font-family: inherit;
+    font-size: inherit;
+    box-sizing: border-box;
+}
+
+textarea:focus {
+    outline: none;
 }

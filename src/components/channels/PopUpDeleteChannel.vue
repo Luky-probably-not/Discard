@@ -97,7 +97,7 @@ const reloadChannel = () => {
 }
 
 .inputs-container .delete-text {
-    background-color: var(--transparent-color);
+    background-color: transparent;
     border-radius: 5px;
     border: var(--border-color);
     padding: 5px;

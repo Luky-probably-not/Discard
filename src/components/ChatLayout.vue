@@ -2,9 +2,11 @@
 import MessageList from '@/components/messages/MessageList.vue';
 import MessageInput from '@/components/messages/MessageInput.vue';
 </script>
-<template class="middle-panel">
-    <MessageList class="top window shadow" />
-    <MessageInput class="bottom window shadow"/>
+<template >
+    <section class="middle-panel">
+        <MessageList class="top window shadow" />
+        <MessageInput class="bottom window shadow"/>
+    </section>
 </template>
 <style scoped>
 .middle-panel {
@@ -15,17 +17,12 @@ import MessageInput from '@/components/messages/MessageInput.vue';
 }
 
 .top {
-  flex: 1;
+  flex-shrink: 0;
+  padding-bottom: 15px;
 }
 
 .bottom {
   flex-shrink: 0;
 }
-.top::-webkit-scrollbar {
-  width: 6px;
-}
 
-.top::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-}
 </style>

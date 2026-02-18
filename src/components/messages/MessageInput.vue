@@ -137,11 +137,14 @@ const handleKeydown = (e: KeyboardEvent) => {
                 placeholder="Type a message or paste an image URL..."
                 rows="1"
             />
-            <input
-                type="submit"
-                value="Send"
-                :disabled="isOverLimit || !messageInput.trim()"
-            />
+            <div class="btn-bar">
+                <input
+                    class="btn-style"
+                    type="submit"
+                    value="Send"
+                    :disabled="isOverLimit || !messageInput.trim()"
+                />
+            </div>
         </form>
     </section>
 </template>
@@ -156,18 +159,16 @@ form {
     gap: 5px;
 }
 
-input[type="submit"] {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    flex-shrink: 0;
+.btn-bar {
+    padding: 10px;
+    flex-direction: column;
+    gap: 8px;
 }
 
-input[type="submit"]:hover:not(:disabled) {
-    background-color: #0056b3;
+.btn-style {
+    padding: 5px 25%;
+    width: 5dvw;
+    min-width: 100px;
 }
 
 input[type="submit"]:disabled {
@@ -184,30 +185,9 @@ input[type="submit"]:disabled {
     border-radius: 5px;
 }
 
-textarea {
-    flex: 1;
-    padding: 10px;
-    border:transparent;
-    background-color: transparent;
-    border-radius: 5px;
-    min-height: 40px;
-    max-height: 200px;
-    resize: none;
-    overflow: hidden;
-    line-height: 1.4;
-    font-family: inherit;
-    font-size: inherit;
-    box-sizing: border-box;
-}
-
-textarea:focus {
-    outline: none;
-}
-
 /* Character Counter */
 .char-counter {
     font-size: 0.6em;
-    color: black;
 }
 
 .char-counter .error {
@@ -216,6 +196,6 @@ textarea:focus {
 }
 
 .headbar {
-  height: 20px;
+  height: 25px;
 }
 </style>

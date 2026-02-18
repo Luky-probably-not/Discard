@@ -114,29 +114,38 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <span class="headbar"><p>{{ channelName }}</p></span>
-    <section class="message-list" ref="messageListRef" @scroll="handleScroll">
+    <section class="messages">
+        <span class="headbar"><p>{{ channelName }}</p></span>
+        <section class="message-list" ref="messageListRef" @scroll="handleScroll">
 
-        <div v-if="showLoadMore" class="load-more-btn-container">
-            <button @click="loadMoreMessages" class="load-more-btn">/\</button>
-        </div>
+            <div v-if="showLoadMore" class="load-more-btn-container">
+                <button @click="loadMoreMessages" class="load-more-btn">/\</button>
+            </div>
 
-        <div v-for="message in messages" :key="message.timestamp" class="window shadow">
-            <MessageItem
-                :author="message.author"
-                :timestamp="message.timestamp"
-                :content-type="message.content.type"
-                :content-value="message.content.value"
-                @message-update="reloadMessages()"
-            />
-        </div>
+            <div v-for="message in messages" :key="message.timestamp" class="window shadow">
+                <MessageItem
+                    :author="message.author"
+                    :timestamp="message.timestamp"
+                    :content-type="message.content.type"
+                    :content-value="message.content.value"
+                    @message-update="reloadMessages()"
+                />
+            </div>
+        </section>
     </section>
 </template>
 
 <style scoped>
+.messages{
+    flex: 1;
+}
 .message-list {
     height: 100%;
     overflow-y: auto;
+}
+
+.headbar {
+    height: 40px;
 }
 
 .load-more-btn-container {
@@ -158,9 +167,5 @@ onUnmounted(() => {
 
 .load-more-btn:hover {
     background: #0056b3;
-}
-
-.headbar {
-  height: 1em;
 }
 </style>
