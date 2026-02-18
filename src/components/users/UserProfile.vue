@@ -41,5 +41,8 @@ button {
   height: 20px;
 }
 
+.btn-bar {
+  border-radius: 0 0 5px 5px;
+}
 
 </style>

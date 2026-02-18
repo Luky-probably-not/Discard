@@ -7,11 +7,11 @@
 
 <template>
     <section class="left-panel">
-        <section class="channels shadow">
+        <section class="channels window shadow">
           <AddChannel class="top"/>
           <ChannelList class="middle"/>
         </section>
-        <section class="user-profile shadow">
+        <section class="window shadow">
           <UserProfile class="bottom"/>
         </section>
     </section>
@@ -29,9 +29,6 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  border: var(--border-color);
-  background-color: var(--primary-color);
-  border-radius: 5px;
 }
 
 .top {
@@ -55,10 +52,5 @@
 .middle::-webkit-scrollbar-thumb {
   background: rgba(255,255,255,0.2);
   border-radius: 4px;
-}
-
-.user-profile {
-  border: var(--border-color);
-  border-radius: 5px;
 }
 </style>
