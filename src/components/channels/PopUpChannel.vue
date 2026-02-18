@@ -14,13 +14,13 @@ const submitForm = async () => {
 </script>
 <template>
     <section class="popup">
-        <section class="popup-headbar">
+        <section class="headbar">
             <button class="close-btn" @click="emit('CloseAddChannel')">×</button>
         </section>
         <form @submit.prevent="submitForm" class="popup-form">
             <input type="text" v-model="name" placeholder="Channel Name" required />
             <input type="text" v-model="img" placeholder="Image URL" />
-            <button type="submit">Create</button>
+            <button type="submit" class="btn-style btn-submit">Create</button>
         </form>
     </section>
 </template>
@@ -40,5 +40,11 @@ const submitForm = async () => {
     border: var(--border-color);
 }
 
+.headbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+  height: 50px;
+}
 
 </style>

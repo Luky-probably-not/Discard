@@ -31,7 +31,6 @@ const store = useStore();
   max-height: 98dvh;
   max-width: 98dvw;
   gap: 1rem;
-  padding: 1rem;
   box-sizing: border-box;
 }
 

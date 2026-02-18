@@ -25,7 +25,7 @@
 </script>
 <template>
     <section class="popup">
-        <section class="popup-headbar">
+        <section class="headbar">
             <p class="name">{{ userInfo.username }}</p>
             <button class="close-btn" @click="$emit('closeProfile')">×</button>
         </section>
@@ -38,7 +38,7 @@
                     <input v-model="userInfo.display_name" type="text"/>
                     <input v-model="userInfo.img" type="text" />
                     <input v-model="userInfo.status" type="text" />
-                    <button type="submit">Update</button>
+                    <button type="submit" class="btn-style btn-submit">Update</button>
                 </section>
             </section>
         </form>
@@ -104,5 +104,11 @@
   font-weight: var(--boutton-font-weight);
   cursor: pointer;
   font-family: var(--text-font-family);
+}
+.headbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
 }
 </style>

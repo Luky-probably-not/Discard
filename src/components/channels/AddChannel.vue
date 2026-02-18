@@ -5,8 +5,9 @@ s<script setup lang="ts">
     const ShowAddChannel = ref(false);
 </script>
 <template>
-    <article class="toolbar">
-        <button @click="ShowAddChannel = !ShowAddChannel">New Channel</button>
+    <span class="headbar"></span>
+    <article class="btn-bar">
+        <button @click="ShowAddChannel = !ShowAddChannel" class="btn-style btn-popup">New Channel</button>
     </article>
     <section v-if="ShowAddChannel" class="overlay">
         <PopUpChannel @CloseAddChannel="ShowAddChannel = false"/>
@@ -26,12 +27,8 @@ s<script setup lang="ts">
 
   z-index: 1000;
 }
-.toolbar {
-  display: flex;
-  align-items: flex-start;
-}
 
-button {
-  height: auto;
+.headbar {
+    height: 20px;
 }
 </style>
