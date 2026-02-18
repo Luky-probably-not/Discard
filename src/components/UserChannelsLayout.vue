@@ -38,8 +38,8 @@
 .middle {
   flex: 1;
   overflow-y: auto;
-  min-height: 75vh;
-  max-height: 75vh;
+  min-height: 72dvh;
+  max-height: 72dvh;
 }
 
 .bottom {

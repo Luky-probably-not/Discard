@@ -99,6 +99,7 @@ const reloadMessages = async () => {
 }
 
 connectWebSocket();
+channelName.value = store.currentChannel!.name
 
 watch(() => store.currentChannel!.id, () => {
     connectWebSocket();
@@ -120,7 +121,7 @@ onUnmounted(() => {
             <button @click="loadMoreMessages" class="load-more-btn">/\</button>
         </div>
 
-        <div v-for="message in messages" :key="message.timestamp">
+        <div v-for="message in messages" :key="message.timestamp" class="window shadow">
             <MessageItem
                 :author="message.author"
                 :timestamp="message.timestamp"
@@ -160,6 +161,6 @@ onUnmounted(() => {
 }
 
 .headbar {
-  height: 40px;
+  height: 1em;
 }
 </style>

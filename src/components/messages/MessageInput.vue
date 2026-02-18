@@ -114,7 +114,14 @@ const handleKeydown = (e: KeyboardEvent) => {
 <template>
 
     <section class="message-input-container">
-        <span class="headbar"></span>
+        <span class="headbar">
+            <!-- Character Counter -->
+            <div v-if="messageInput" class="char-counter">
+                <p :class="{ 'error': isOverLimit }">
+                    {{ messageInput.length }} / {{ maxLength }}
+                </p>
+            </div>
+        </span>
         <!-- Preview -->
         <div v-if="preview" class="preview">
             <img :src="preview" :alt="messageInput" />
@@ -136,13 +143,6 @@ const handleKeydown = (e: KeyboardEvent) => {
                 :disabled="isOverLimit || !messageInput.trim()"
             />
         </form>
-
-        <!-- Character Counter -->
-        <div v-if="messageInput" class="char-counter">
-            <span :class="{ 'error': isOverLimit }">
-                {{ messageInput.length }} / {{ maxLength }}
-            </span>
-        </div>
     </section>
 </template>
 
@@ -187,7 +187,8 @@ input[type="submit"]:disabled {
 textarea {
     flex: 1;
     padding: 10px;
-    border: 1px solid #ddd;
+    border:transparent;
+    background-color: transparent;
     border-radius: 5px;
     min-height: 40px;
     max-height: 200px;
@@ -201,19 +202,16 @@ textarea {
 
 textarea:focus {
     outline: none;
-    border-color: #007bff;
 }
 
 /* Character Counter */
 .char-counter {
-    font-size: 12px;
-    color: #666;
-    text-align: right;
-    padding: 4px 10px 0;
+    font-size: 0.6em;
+    color: black;
 }
 
 .char-counter .error {
-    color: #dc3545;
+    color: red;
     font-weight: bold;
 }
 

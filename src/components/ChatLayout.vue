@@ -3,8 +3,8 @@ import MessageList from '@/components/messages/MessageList.vue';
 import MessageInput from '@/components/messages/MessageInput.vue';
 </script>
 <template class="middle-panel">
-    <MessageList class="top shadow" />
-    <MessageInput class="bottom shadow"/>
+    <MessageList class="top window shadow" />
+    <MessageInput class="bottom window shadow"/>
 </template>
 <style scoped>
 .middle-panel {

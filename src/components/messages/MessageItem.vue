@@ -147,97 +147,81 @@ const isCreator = (): boolean => {
 </script>
 
 <template>
-    <div class="message-item">
-        <div class="message-header">
-            <span class="author">{{ props.author }}</span>
-            <span class="timestamp">{{ formatTimestamp(props.timestamp) }}</span>
-            <div class="actions">
+    <section class="headbar">
+        <p class="author">{{ props.author }}</p>
+        <p class="timestamp">{{ formatTimestamp(props.timestamp) }}</p>
+        <div class="actions">
+            <button
+                v-if="isCreator() && !isEditing"
+                @click="enterEditMode"
+                class="edit-btn"
+                title="Edit message"
+            >
+                Edit
+            </button>
+        </div>
+    </section>
+
+    <section class="message-content">
+        <!-- Display mode -->
+        <section v-if="!isEditing">
+            <div v-if="props.contentType === 'Image'" class="content-image">
+                <img :src="props.contentValue" :alt="'Unable to load image'" />
+            </div>
+            <div v-else-if="isYouTubeUrl(props.contentValue)" class="content-youtube">
+                <iframe
+                    :src="`https://www.youtube.com/embed/${getYouTubeId(props.contentValue)}`"
+                    frameborder="0"
+                    allowfullscreen
+                    class="youtube-iframe"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                ></iframe>
+            </div>
+            <div v-else class="content-text">
+                <div v-html="renderMarkdown(props.contentValue)"></div>
+            </div>
+        </section>
+
+        <!-- Edit mode -->
+        <section v-else class="edit-form">
+            <div v-if="editedContentType === 'Image'" class="edit-preview">
+                <img :src="editedContent" :alt="props.author" />
+            </div>
+
+            <textarea
+                ref="textareaRef"
+                v-model="editedContent"
+                @input="handleEditInput"
+                placeholder="Edit message or paste an image URL..."
+                class="edit-input"
+                rows="1"
+            />
+
+            <!-- Character Counter -->
+            <div v-if="editedContent" class="char-counter">
+                <span :class="{ 'error': isOverLimit }">
+                    {{ editedContent.length }} / {{ maxLength }}
+                </span>
+            </div>
+
+            <div class="edit-actions">
                 <button
-                    v-if="isCreator() && !isEditing"
-                    @click="enterEditMode"
-                    class="edit-btn"
-                    title="Edit message"
+                    @click="handleSaveEdit"
+                    class="save-btn"
+                    :disabled="isOverLimit || !editedContent.trim()"
                 >
-                    Edit
+                    Save
+                </button>
+                <button @click="handleCancel" class="cancel-btn">
+                    Cancel
                 </button>
             </div>
-        </div>
-
-        <div class="message-content">
-            <!-- Display mode -->
-            <div v-if="!isEditing">
-                <div v-if="props.contentType === 'Image'" class="content-image">
-                    <img :src="props.contentValue" :alt="'Unable to load image'" />
-                </div>
-                <div v-else-if="isYouTubeUrl(props.contentValue)" class="content-youtube">
-                    <iframe
-                        :src="`https://www.youtube.com/embed/${getYouTubeId(props.contentValue)}`"
-                        frameborder="0"
-                        allowfullscreen
-                        class="youtube-iframe"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    ></iframe>
-                </div>
-                <div v-else class="content-text">
-                    <div v-html="renderMarkdown(props.contentValue)"></div>
-                </div>
-            </div>
-
-            <!-- Edit mode -->
-            <div v-else class="edit-form">
-                <div v-if="editedContentType === 'Image'" class="edit-preview">
-                    <img :src="editedContent" :alt="props.author" />
-                </div>
-
-                <textarea
-                    ref="textareaRef"
-                    v-model="editedContent"
-                    @input="handleEditInput"
-                    placeholder="Edit message or paste an image URL..."
-                    class="edit-input"
-                    rows="1"
-                />
-
-                <!-- Character Counter -->
-                <div v-if="editedContent" class="char-counter">
-                    <span :class="{ 'error': isOverLimit }">
-                        {{ editedContent.length }} / {{ maxLength }}
-                    </span>
-                </div>
-
-                <div class="edit-actions">
-                    <button
-                        @click="handleSaveEdit"
-                        class="save-btn"
-                        :disabled="isOverLimit || !editedContent.trim()"
-                    >
-                        Save
-                    </button>
-                    <button @click="handleCancel" class="cancel-btn">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+        </section>
+    </section>
 </template>
 
 <style scoped>
-.message-item {
-    padding: 10px 0;
-    margin: 5px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.message-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 0.9em;
-}
-
-.author {
+/* .author {
     font-weight: 600;
     color: #333;
 }
@@ -245,7 +229,7 @@ const isCreator = (): boolean => {
 .timestamp {
     color: #888;
     font-size: 0.8em;
-}
+} */
 
 .actions {
     display: flex;
