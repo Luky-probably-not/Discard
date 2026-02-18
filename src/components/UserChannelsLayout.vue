@@ -21,14 +21,14 @@
 .left-panel {
   display: flex;
   flex-direction: column;
-  flex :1; 
+  height: 100%; 
   gap: 15px;
 }
 
 .channels {
   display: flex;
   flex-direction: column;
-  height: 85%;
+  flex: 1;
   border: var(--border-color);
   background-color: var(--primary-color);
   border-radius: 5px;
@@ -41,6 +41,8 @@
 .middle {
   flex: 1;
   overflow-y: auto;
+  min-height: 75vh;
+  max-height: 75vh;
 }
 
 .bottom {
