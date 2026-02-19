@@ -185,7 +185,6 @@ input[type="submit"]:disabled {
     border-radius: 5px;
 }
 
-/* Character Counter */
 .char-counter {
     font-size: 0.6em;
 }
