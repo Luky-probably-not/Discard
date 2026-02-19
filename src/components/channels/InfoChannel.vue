@@ -22,7 +22,6 @@ const store = useStore();
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background: color-mix(in srgb, var(--primary-color) 80%, black);
     height: 87%;
     padding: 10px;
     overflow-y: auto;
