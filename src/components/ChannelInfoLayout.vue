@@ -55,7 +55,6 @@ loadCreatorCheck()
     gap:15px;
     max-height: 95vh;
     width: 100%;
-    overflow: hidden;
 }
 
 .channel-info {
@@ -67,6 +66,7 @@ loadCreatorCheck()
 
 .channel-users {
     max-height: 45vh;
+    overflow: hidden;
 }
 
 .overlay {

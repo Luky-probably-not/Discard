@@ -28,7 +28,7 @@
             gap: 10px;
             background-color: var(--primary-color);
             overflow-y: auto;
-            max-height: 100%;
+            max-height: 85%;
             padding: 10px;
         }
 
