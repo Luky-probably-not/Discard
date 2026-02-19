@@ -33,7 +33,7 @@ onMounted(async () => {
         overflow-y: auto;
         padding-bottom: 5px;
     }
-    
+
     .channel-list::-webkit-scrollbar {
         width: 6px;
     }

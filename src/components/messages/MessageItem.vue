@@ -137,7 +137,13 @@ const handleCancel = (): void => {
 // Format timestamp
 const formatTimestamp = (timestamp: number | undefined): string => {
     if (!timestamp) return '';
-    return new Date(timestamp).toLocaleString();
+    return new Date(timestamp).toLocaleString([], {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 };
 
 // Check if current user is creator
@@ -147,48 +153,54 @@ const isCreator = (): boolean => {
 </script>
 
 <template>
-    <div class="message-item">
-        <div class="message-header">
-            <span class="author">{{ props.author }}</span>
-            <span class="timestamp">{{ formatTimestamp(props.timestamp) }}</span>
-            <div class="actions">
-                <button
-                    v-if="isCreator() && !isEditing"
-                    @click="enterEditMode"
-                    class="edit-btn"
-                    title="Edit message"
-                >
-                    Edit
-                </button>
+    <section class="headbar">
+        <p class="author">{{ props.author }}</p>
+        <p class="timestamp">({{ formatTimestamp(props.timestamp) }})</p>
+        <button
+            v-if="isCreator() && !isEditing"
+            @click="enterEditMode"
+            class="edit-btn-style"
+            title="Edit message"
+        >
+            <img class="edit-icon" src="https://img.icons8.com/?size=100&id=16264&format=png" alt="edit"/>
+        </button>
+    </section>
+
+    <section class="message-content">
+        <!-- Display mode -->
+        <section v-if="!isEditing">
+            <div v-if="props.contentType === 'Image'" class="content-image">
+                <img :src="props.contentValue" :alt="'Unable to load image'" />
             </div>
-        </div>
+            <div v-else-if="isYouTubeUrl(props.contentValue)" class="content-youtube">
+                <iframe
+                    :src="`https://www.youtube.com/embed/${getYouTubeId(props.contentValue)}`"
+                    frameborder="0"
+                    allowfullscreen
+                    class="youtube-iframe"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                ></iframe>
+            </div>
+            <div v-else class="content-text">
+                <div v-html="renderMarkdown(props.contentValue)"></div>
+            </div>
+        </section>
 
-        <div class="message-content">
-            <!-- Display mode -->
-            <div v-if="!isEditing">
-                <div v-if="props.contentType === 'Image'" class="content-image">
-                    <img :src="props.contentValue" :alt="'Unable to load image'" />
-                </div>
-                <div v-else-if="isYouTubeUrl(props.contentValue)" class="content-youtube">
-                    <iframe
-                        :src="`https://www.youtube.com/embed/${getYouTubeId(props.contentValue)}`"
-                        frameborder="0"
-                        allowfullscreen
-                        class="youtube-iframe"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    ></iframe>
-                </div>
-                <div v-else class="content-text">
-                    <div v-html="renderMarkdown(props.contentValue)"></div>
-                </div>
+        <!-- Edit mode -->
+        <section v-else class="edit-form">
+            <div v-if="editedContentType === 'Image'" class="edit-preview">
+                <img :src="editedContent" :alt="props.author" />
             </div>
 
-            <!-- Edit mode -->
-            <div v-else class="edit-form">
-                <div v-if="editedContentType === 'Image'" class="edit-preview">
-                    <img :src="editedContent" :alt="props.author" />
-                </div>
 
+            <!-- Character Counter -->
+            <div v-if="editedContent" class="char-counter">
+                <span :class="{ 'error': isOverLimit }">
+                    {{ editedContent.length }} / {{ maxLength }}
+                </span>
+            </div>
+
+            <section class="edit-section">
                 <textarea
                     ref="textareaRef"
                     v-model="editedContent"
@@ -198,74 +210,24 @@ const isCreator = (): boolean => {
                     rows="1"
                 />
 
-                <!-- Character Counter -->
-                <div v-if="editedContent" class="char-counter">
-                    <span :class="{ 'error': isOverLimit }">
-                        {{ editedContent.length }} / {{ maxLength }}
-                    </span>
-                </div>
-
-                <div class="edit-actions">
+                <div class="btn-bar">
                     <button
                         @click="handleSaveEdit"
-                        class="save-btn"
+                        class="btn-style save-btn "
                         :disabled="isOverLimit || !editedContent.trim()"
                     >
                         Save
                     </button>
-                    <button @click="handleCancel" class="cancel-btn">
+                    <button @click="handleCancel" class="btn-style cancel-btn">
                         Cancel
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
+            </section>
+        </section>
+    </section>
 </template>
 
 <style scoped>
-.message-item {
-    padding: 10px 0;
-    margin: 5px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.message-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 0.9em;
-}
-
-.author {
-    font-weight: 600;
-    color: #333;
-}
-
-.timestamp {
-    color: #888;
-    font-size: 0.8em;
-}
-
-.actions {
-    display: flex;
-    gap: 5px;
-}
-
-.edit-btn {
-    padding: 4px 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.8em;
-    transition: background-color 0.2s;
-}
-
-.edit-btn:hover {
-    background-color: #218838;
-}
 
 .message-content {
     margin-top: 5px;
@@ -278,32 +240,13 @@ const isCreator = (): boolean => {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.content-text {
-    line-height: 1.5;
+.content-text :deep(*){
+    margin: 0.5em 0;
     word-wrap: break-word;
 }
 
-.content-text :deep(h1),
-.content-text :deep(h2),
-.content-text :deep(h3) {
-    margin: 0.5em 0;
-    font-size: 1.1em;
-}
-
-.content-text :deep(p) {
-    margin: 0.25em 0;
-}
-
-.content-text :deep(strong) {
-    font-weight: 600;
-}
-
-.content-text :deep(em) {
-    font-style: italic;
-}
-
 .content-text :deep(code) {
-    background: #f4f4f4;
+    background: color-mix(in srgb, var(--primary-color) 80%, black);
     padding: 2px 6px;
     border-radius: 4px;
     font-family: 'Monaco', 'Menlo', monospace;
@@ -311,81 +254,56 @@ const isCreator = (): boolean => {
 }
 
 .content-text :deep(blockquote) {
-    border-left: 4px solid #007bff;
-    margin: 0.5em 0;
+    border-left: 6px solid var(--accent-color);
     padding-left: 1em;
-    color: #666;
     font-style: italic;
 }
 
-.content-text :deep(ul),
-.content-text :deep(ol) {
-    padding-left: 1.5em;
-    margin: 0.5em 0;
+.edit-btn-style {
+    background-color: transparent;
+    box-shadow: var(--box-shadow-intern);
+    border-radius: 5px;
+    border: var(--border-color);
+    font-weight: var(--button-font-weight);
+    font-size: medium;
+    font-family: var(--text-font-family);
+    color: var(--text-color);
+    cursor: pointer;
+    margin: 2em;
 }
 
-.content-text :deep(li) {
-    margin: 0.25em 0;
+.edit-icon {
+    width: 15px;
+    height: 15px;
 }
 
 .edit-form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    width: 100%;
 }
 
-.edit-input {
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: 1.5;
-    min-height: 40px;
-    max-height: 200px;
-    resize: none;
-    overflow: hidden;
-    box-sizing: border-box;
-    transition: border-color 0.2s;
+.edit-section {
+    display: flex;
+    gap: 5px;
 }
 
-.edit-input:focus {
-    outline: none;
-    border-color: #007bff;
+.btn-bar {
+    padding: 10px;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.edit-preview {
-    margin-bottom: 8px;
+.btn-style {
+    padding: 5px 25%;
+    width: 5dvw;
+    min-width: 100px;
 }
 
 .edit-preview img {
     max-width: 100%;
     max-height: 200px;
     border-radius: 8px;
-}
-
-.edit-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.save-btn, .cancel-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-    flex: 1;
-}
-
-.save-btn {
-    background-color: #28a745;
-    color: white;
-}
-
-.save-btn:hover:not(:disabled) {
-    background-color: #218838;
 }
 
 .save-btn:disabled {
@@ -395,11 +313,24 @@ const isCreator = (): boolean => {
 
 .cancel-btn {
     background-color: #6c757d;
-    color: white;
 }
 
 .cancel-btn:hover {
     background-color: #5a6268;
+}
+
+.headbar {
+    height: 30px;
+}
+
+.author {
+    font-size: 1em;
+}
+
+.timestamp {
+    font-size: 0.8em;
+    color: color-mix(in srgb, var(--accent-text-color) 80%, black);
+    font-style: italic;
 }
 
 .content-youtube {
@@ -418,21 +349,17 @@ const isCreator = (): boolean => {
     border-radius: 8px;
 }
 
+/* Character Counter */
 .char-counter {
-    font-size: 12px;
-    color: #666;
-    text-align: right;
-    padding: 4px 10px 0;
-    margin-bottom: 8px;
+    font-size: 0.7em;
+    margin-left: 15px;
+    font-weight: var(--boutton-font-weight);
+    color: var(--accent-text-color);
 }
 
 .char-counter .error {
-    color: #dc3545;
+    color: red;
     font-weight: bold;
 }
 
-.save-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
 </style>

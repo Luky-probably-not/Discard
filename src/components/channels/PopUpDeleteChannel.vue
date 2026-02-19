@@ -92,6 +92,18 @@ const reloadChannel = () => {
   margin-top: 10dvh;
 }
 
+<<<<<<< HEAD
+=======
+.inputs-container .delete-text {
+    background-color: transparent;
+    border-radius: 5px;
+    border: var(--border-color);
+    padding: 5px;
+    font-size: small;
+    font-family: var(--text-font-family);
+}
+
+>>>>>>> main
 .inputs-container input {
   padding: 8px 10px;
   border-radius: 5px;

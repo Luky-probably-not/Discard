@@ -112,7 +112,16 @@ const handleKeydown = (e: KeyboardEvent) => {
 </script>
 
 <template>
-    <div class="message-input-container">
+
+    <section class="message-input-container">
+        <span class="headbar">
+            <!-- Character Counter -->
+            <div v-if="messageInput" class="char-counter">
+                <p :class="{ 'error': isOverLimit }">
+                    {{ messageInput.length }} / {{ maxLength }}
+                </p>
+            </div>
+        </span>
         <!-- Preview -->
         <div v-if="preview" class="preview">
             <img :src="preview" :alt="messageInput" />
@@ -128,20 +137,16 @@ const handleKeydown = (e: KeyboardEvent) => {
                 placeholder="Type a message or paste an image URL..."
                 rows="1"
             />
-            <input
-                type="submit"
-                value="Send"
-                :disabled="isOverLimit || !messageInput.trim()"
-            />
+            <div class="btn-bar">
+                <input
+                    class="btn-style"
+                    type="submit"
+                    value="Send"
+                    :disabled="isOverLimit || !messageInput.trim()"
+                />
+            </div>
         </form>
-
-        <!-- Character Counter -->
-        <div v-if="messageInput" class="char-counter">
-            <span :class="{ 'error': isOverLimit }">
-                {{ messageInput.length }} / {{ maxLength }}
-            </span>
-        </div>
-    </div>
+    </section>
 </template>
 
 <style scoped>
@@ -154,18 +159,16 @@ form {
     gap: 5px;
 }
 
-input[type="submit"] {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    flex-shrink: 0;
+.btn-bar {
+    padding: 10px;
+    flex-direction: column;
+    gap: 8px;
 }
 
-input[type="submit"]:hover:not(:disabled) {
-    background-color: #0056b3;
+.btn-style {
+    padding: 5px 25%;
+    width: 5dvw;
+    min-width: 100px;
 }
 
 input[type="submit"]:disabled {
@@ -182,36 +185,17 @@ input[type="submit"]:disabled {
     border-radius: 5px;
 }
 
-textarea {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    min-height: 40px;
-    max-height: 200px;
-    resize: none;
-    overflow: hidden;
-    line-height: 1.4;
-    font-family: inherit;
-    font-size: inherit;
-    box-sizing: border-box;
-}
-
-textarea:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
 /* Character Counter */
 .char-counter {
-    font-size: 12px;
-    color: #666;
-    text-align: right;
-    padding: 4px 10px 0;
+    font-size: 0.6em;
 }
 
 .char-counter .error {
-    color: #dc3545;
+    color: red;
     font-weight: bold;
+}
+
+.headbar {
+  height: 25px;
 }
 </style>

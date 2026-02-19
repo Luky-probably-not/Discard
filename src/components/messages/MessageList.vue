@@ -8,6 +8,7 @@ import { useStore } from '@/store';
 const apiBaseUrl = import.meta.env.VITE_API_URL
 
 const messages = ref<Message[]>([]);
+const channelName = ref<string>("")
 const hasMoreMessages = ref(true);
 const currentOffset = ref(0);
 const showLoadMore = ref(false); // NEW: Track scroll position
@@ -98,9 +99,11 @@ const reloadMessages = async () => {
 }
 
 connectWebSocket();
+channelName.value = store.currentChannel!.name
 
 watch(() => store.currentChannel!.id, () => {
     connectWebSocket();
+    channelName.value = store.currentChannel!.name
 });
 
 onUnmounted(() => {
@@ -111,27 +114,40 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <section class="message-list" ref="messageListRef" @scroll="handleScroll">
-        <div v-if="showLoadMore" class="load-more-btn-container">
-            <button @click="loadMoreMessages" class="load-more-btn">/\</button>
-        </div>
+    <section class="messages">
+        <span class="headbar"><p>{{ channelName }}</p></span>
+        <section class="message-list" ref="messageListRef" @scroll="handleScroll">
 
-        <div v-for="message in messages" :key="message.timestamp">
-            <MessageItem
-                :author="message.author"
-                :timestamp="message.timestamp"
-                :content-type="message.content.type"
-                :content-value="message.content.value"
-                @message-update="reloadMessages()"
-            />
-        </div>
+            <div v-if="showLoadMore" class="load-more-btn-container">
+                <button @click="loadMoreMessages" class="load-more-btn">/\</button>
+            </div>
+
+            <div v-for="message in messages" :key="message.timestamp" class="window shadow">
+                <MessageItem
+                    :author="message.author"
+                    :timestamp="message.timestamp"
+                    :content-type="message.content.type"
+                    :content-value="message.content.value"
+                    @message-update="reloadMessages()"
+                />
+            </div>
+        </section>
     </section>
 </template>
 
 <style scoped>
+.messages{
+    flex: 1;
+}
+
 .message-list {
     height: 100%;
     overflow-y: auto;
+    padding: 10px;
+}
+
+.headbar {
+    height: 40px;
 }
 
 .load-more-btn-container {
