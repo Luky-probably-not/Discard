@@ -29,7 +29,6 @@ onMounted(async () => {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        background-color: var(--primary-color);
         height: 100%;
         overflow-y: auto;
         padding-bottom: 5px;

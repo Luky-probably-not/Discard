@@ -3,14 +3,14 @@ import { GetChannelByUser, UpdateChannel } from '@/api/channel';
 import PopUpDeleteChannel from '@/components/channels/PopUpDeleteChannel.vue'
 import { useStore } from '@/store';
 import type { Theme } from '@/types';
-import { computed, ref, watch } from 'vue';
+import { ref } from 'vue';
 
 const store = useStore();
 
 const emit = defineEmits(["closeEdition"])
 
 
-let InDeletionProcess = ref(false);
+const InDeletionProcess = ref(false);
 const currentTheme = ref<Theme>();
 
 const switchEditionProcess = () => {

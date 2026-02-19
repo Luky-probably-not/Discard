@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@/store';
 import UserInfo from '../users/UserInfo.vue';
-import { computed, ref } from 'vue';
-import { getMultipleUserByName } from '@/api/user';
-import type { User } from '@/types';
 
 defineProps({
     isCreator: Boolean
@@ -25,7 +22,7 @@ const store = useStore();
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color) 80%, black);
     height: 87%;
     padding: 10px;
     overflow-y: auto;

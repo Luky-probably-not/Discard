@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import InfoChannel from '@/components/channels/InfoChannel.vue';
-import PopUpDeleteChannel from '@/components/channels/PopUpDeleteChannel.vue';
 import PopUpEditChannel from '@/components/channels/PopUpEditChannel.vue';
 import AddUser from '@/components/users/AddUser.vue';
 import { useStore } from '@/store';

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { DeleteChannel } from '@/api/channel';
 import { useStore } from '@/store';
-import { computed, ref, watch } from 'vue';
 const store = useStore();
 
 const emit= defineEmits(["closePopup"])
@@ -25,7 +24,7 @@ const deleteChannel = async () => {
                     <img v-bind:src="store.currentChannel!.img"/><br>
                 </span>
                 <section class="inputs-container">
-                    <button type="submit" class="btn-style btn-submit" @click="">Confirm Channel deletion</button>
+                    <button type="submit" class="btn-style btn-submit">Confirm Channel deletion</button>
                 </section>
             </section>
         </form>
