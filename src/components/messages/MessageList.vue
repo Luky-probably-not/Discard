@@ -79,6 +79,9 @@ const connectWebSocket = async () => {
             }
         });
     };
+
+    // Load user data to display them with each message
+    await store.getUserData()
 };
 
 // ========== MESSAGE LOADING ==========
@@ -165,7 +168,7 @@ onUnmounted(() => {
             <!-- Render all messages -->
             <div v-for="message in messages" :key="message.timestamp" class="window shadow message" :class="{ 'own-message': message.author == store.username }">
                 <MessageItem
-                    :author="message.author"
+                    :author="store.UsersData.find(u => u.username == message.author) ?? store.nullUser(message.author)"
                     :timestamp="message.timestamp"
                     :content-type="message.content.type"
                     :content-value="message.content.value"

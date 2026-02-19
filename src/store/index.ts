@@ -1,7 +1,8 @@
-import { type Channel } from "@/types";
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
 import { extendSession } from "@/api/auth";
+import { getOneUserByName } from "@/api/user";
+import { type Channel, type User } from "@/types";
+import { defineStore } from "pinia";
+import { computed, ref } from "vue";
 
 export const useStore = defineStore("main", () => {
     // --- STATE DECLARATIONS ---
@@ -13,7 +14,7 @@ export const useStore = defineStore("main", () => {
     const currentChannel = ref<Channel | null>(null);
     const userChannels = ref<Channel[]>([]);
     const messageDrafts = ref<Record<number, string>>({});
-
+    const UsersData = ref<User[]>([]);
     // --- COMPUTED PROPERTIES ---
 
     // Checks if the JWT token exists and not expired
@@ -175,7 +176,26 @@ export const useStore = defineStore("main", () => {
         return channel.creator == username.value
     }
 
-    // --- STORE EXPORTS ---
+    const nullUser = (username : string) => {
+        return {
+            username : username,
+            display_name : username,
+            img : "./basePP.png",
+            status : ""
+        }
+    }
+
+    const getUserData = async () => {
+        let userInfos : User[] = []
+        for (let user of currentChannel.value!.users) {
+            const u = await getOneUserByName(user)
+            userInfos.push(u ?? nullUser(user))
+        }
+        UsersData.value = userInfos
+        return userInfos
+    }
+
+    // --EXPORTS--
     return {
         username,
         jwtToken,
@@ -184,6 +204,7 @@ export const useStore = defineStore("main", () => {
         userChannels,
         messageDrafts,
         isTokenValid,
+        UsersData,
         setAuthInfo,
         loadAuthInfo,
         clearAuthInfo,
@@ -191,6 +212,8 @@ export const useStore = defineStore("main", () => {
         setDraftForChannel,
         getDraftForChannel,
         clearDraftForChannel,
-        CheckIsCreator: checkIsCreator
+        CheckIsCreator: checkIsCreator,
+        getUserData,
+        nullUser
     }
 });
