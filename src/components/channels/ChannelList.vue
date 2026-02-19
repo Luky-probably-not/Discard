@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import Channelitem from '@/components/channels/ChannelItem.vue';
-
 import {GetChannelByUser} from "@/api/channel"
-
 import {onMounted} from "vue"
-
 import { useStore } from "@/store";
 
+// get the store to update the user channels list when the component is mounted
 const store = useStore();
 
+// when the component is mounted, fetch the channels for the user and update the store
 onMounted(async () => {
     store.userChannels = await GetChannelByUser()
 })
