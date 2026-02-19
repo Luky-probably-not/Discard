@@ -15,7 +15,7 @@
     })
 
     onMounted(async () => {
-        userInfo.value = await getOneUserByName(store.username)
+        userInfo.value = (await getOneUserByName(store.username))!
     })
 
     const update = async () => {

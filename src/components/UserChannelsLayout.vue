@@ -29,8 +29,7 @@
   display: flex;
   flex-direction: column;
   flex: 0 0 85%;
-  max-height: 85%;
-  min-height: 85%;
+  max-height: 80vh;
   overflow: hidden;
   padding-bottom: 15px;
 }

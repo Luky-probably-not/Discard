@@ -57,7 +57,7 @@ loadCurrentTheme();
 </script>
 <template>
     <section class="popup">
-        <section class="popup-headbar">
+        <section class="headbar">
             <p class="name">Edit Channel</p>
             <button class="close-btn" @click="$emit('closeEdition')">x</button>
         </section>
@@ -70,7 +70,7 @@ loadCurrentTheme();
                     <section class="inputs-container">
                         <input v-model="currentChannelInfo.name" type="text"/>
                         <input v-model="currentChannelInfo.img" type="text"/>
-                        <button type="submit">Update</button>
+                        <button type="submit" class="btn-style btn-submit">Update</button>
                     </section>
 
                     <section class="theme-container">
@@ -107,7 +107,7 @@ loadCurrentTheme();
 </template>
 <style scoped>
 .popup {
-    width: 1100px;
+    width: 1000px;
     height: 600px;
     border-radius: 5px;
     padding: 0 50px;
@@ -149,6 +149,31 @@ loadCurrentTheme();
   margin-top: 10dvh;
 }
 
+.inputs-container input {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: var(--border-color);
+  font-family: var(--text-font-family);
+  font-size: 1em;
+}
+
+
+.inputs-container button {
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: var(--border-color);
+  background-color: var(--accent-color);
+  font-weight: var(--boutton-font-weight);
+  cursor: pointer;
+  font-family: var(--text-font-family);
+}
+.headbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+}
+
 .theme-container {
     display: flex;
     flex-direction: column;
@@ -170,25 +195,6 @@ loadCurrentTheme();
   border-radius: 5px;
   border: var(--border-color);
 }
-
-.inputs-container input {
-  padding: 8px 10px;
-  border-radius: 5px;
-  border: var(--border-color);
-  font-family: var(--text-font-family);
-  font-size: 1em;
-}
-
-.inputs-container button {
-  padding: 10px 15px;
-  border-radius: 5px;
-  border: var(--border-color);
-  background-color: var(--accent-color);
-  font-weight: var(--boutton-font-weight);
-  cursor: pointer;
-  font-family: var(--text-font-family);
-}
-
 .delete-button {
     padding: 10px 15px;
     border-radius: 5px;

@@ -13,14 +13,10 @@ const currentChannelWatcher = computed(() => {
     return store.currentChannel!
 })
 
-const confirm = ref(false);
-
 const deleteChannel = async () => {
-    if (confirm.value){
-        await DeleteChannel(currentChannelInfo.id)
-        emit('closePopup')
-        store.currentChannel = null;
-    }
+    await DeleteChannel(currentChannelInfo.id)
+    emit('closePopup')
+    store.currentChannel = null;
 }
 
 watch(
@@ -36,7 +32,7 @@ const reloadChannel = () => {
 </script>
 <template>
     <section class="popup">
-        <section class="popup-headbar">
+        <section class="headbar">
             <p class="name">Delete channel</p>
             <button class="close-btn" @click="$emit('closePopup')">x</button>
         </section>
@@ -46,7 +42,7 @@ const reloadChannel = () => {
                     <img v-bind:src="currentChannelInfo.img"/><br>
                 </span>
                 <section class="inputs-container">
-                    <button type="submit">Delete Channel</button>
+                    <button type="submit" @click="">Confirm Channel deletion</button>
                 </section>
             </section>
         </form>
@@ -96,6 +92,8 @@ const reloadChannel = () => {
   margin-top: 10dvh;
 }
 
+<<<<<<< HEAD
+=======
 .inputs-container .delete-text {
     background-color: transparent;
     border-radius: 5px;
@@ -105,27 +103,13 @@ const reloadChannel = () => {
     font-family: var(--text-font-family);
 }
 
+>>>>>>> main
 .inputs-container input {
   padding: 8px 10px;
   border-radius: 5px;
   border: var(--border-color);
   font-family: var(--text-font-family);
   font-size: 1em;
-}
-
-.inputs-container .confirm-checkbox {
-    padding: 8px 10px;
-    border-radius: 5px;
-    border: var(--border-color);
-    font-family: var(--text-font-family);
-    font-size: 1em;
-
-}
-
-.inputs-container .delete-text {
-    display: flex;
-    flex-direction: column;
-
 }
 
 .inputs-container button {
@@ -136,6 +120,12 @@ const reloadChannel = () => {
   font-weight: var(--boutton-font-weight);
   cursor: pointer;
   font-family: var(--text-font-family);
+}
+.headbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
 }
 
 .inputs-container button[type="submit"] {

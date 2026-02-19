@@ -23,6 +23,7 @@ import MessageInput from '@/components/messages/MessageInput.vue';
 
 .bottom {
   flex-shrink: 0;
+  max-height: 10vh;
 }
 
 </style>

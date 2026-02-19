@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RemoveUserFromChannel } from '@/api/channel';
-import { getMultipleUserByName } from '@/api/user';
+import { getOneUserByName } from '@/api/user';
 import { useStore } from '@/store';
 import type { User } from '@/types';
 import { computed, ref, watch } from 'vue';
@@ -9,37 +9,29 @@ const store = useStore();
 
 const props = defineProps<{
     isCreator : boolean
+    userName : String
 }>();
 
-const infoUsers = ref<User[]>([]);
+const UserInfo = ref<User>()
+
+const nullUser : User = {
+    username : props.userName.toString() ?? "blank",
+    display_name : props.userName.toString() ?? "blank_display",
+    img : "./basePP.png",
+    status : ""
+}
 
 const channelUsersWatcher = computed(() => store.currentChannel!.users);
 
 const loadUser = async () => {
-    console.log(props.isCreator)
-    infoUsers.value = await getMultipleUserByName(store.currentChannel!.users);
-    compareUsers();
+    UserInfo.value = nullUser
+    console.log(props.userName)
+    const u = await getOneUserByName(props.userName.toString())
+    compareUsers(u);
 }
 
-const compareUsers = () => {
-    const newUsers : User[] = []
-    console.log("ref")
-    console.log(infoUsers.value)
-    for (let i = 0; i < store.currentChannel!.users.length; i++) {
-        let tempUser : User;
-        const currentUser = store.currentChannel!.users[i]
-        console.log(i, currentUser)
-        const u = infoUsers.value.find(u => u.username == currentUser)
-        console.log(currentUser, u)
-        tempUser = u ??  {
-                username : currentUser!,
-                display_name : currentUser!,
-                img : "./basePP.png",
-                status : ""
-            }
-        newUsers.push(tempUser);
-    }
-    infoUsers.value = newUsers;
+const compareUsers = (u : User | undefined) => {
+    UserInfo.value = u ?? nullUser
 }
 
 const removeUserFromChannel = async (userName : string) => {
@@ -56,62 +48,67 @@ loadUser();
 
 </script>
 <template>
-        <div v-for="user in infoUsers" :key="user.username" class="infoUser">
-            <img v-bind:src="user.img">
+    <section class="user-item">
+        <img v-bind:src="UserInfo?.img || './BasePP.png'">
             <div class="userText">
                 <div class="nameWrapper">
                     <h4 class="displayName">
-                        {{ user.display_name }}
+                        {{ UserInfo?.display_name || userName }}
                     </h4>
                     <span class="usernameTooltip">
-                        {{ user.username }}
+                        {{ UserInfo?.username || userName }}
                     </span>
                 </div>
-                <p>{{ user.status }}</p>
+                <p>{{ UserInfo?.status }}</p>
             </div>
-            <div v-if="isCreator && user.username != store.currentChannel?.creator">
-                <button @click="removeUserFromChannel(user.username)">Remove</button>
+            <div v-if="isCreator && UserInfo!.username != store.currentChannel?.creator">
+                <button class="btn-style btn-submit" @click="removeUserFromChannel(UserInfo!.username)">Remove</button>
             </div>
-        </div>
+    </section>
 </template>
 <style scoped>
-.infoUser {
+
+.user-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-    border-bottom: 1px solid #e5e5e5;
+    gap: 6px;
+    margin: 0 0px;
+    padding: 2px 14px;
+    margin: 0 15% 0 5%;
+    border-radius: 8px;
+    border: var(--border-color);
+    background-color: var(--primary-color);
+    box-shadow: var(--box-shadow-intern);
+    width: 80%;
 }
 
-.infoUser img {
+.user-item img {
   width: 36px;
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: var(--border-color)
 }
 
-.infoUser h4 {
+.user-item h4 {
     margin: 0;
     font-size: 16px;
 }
 
-.infoUser p {
+.user-item p {
     margin: 3px 0 0 0;
     font-size: 13px;
     color: #777;
 }
 
-/* Container texte (displayName + status) */
-.infoUser > div:first-of-type,
-.infoUser .userText {
+.user-item > div:first-of-type,
+.user-item .userText {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-/* Bouton */
-.infoUser button {
+.user-item button {
     padding: 6px 12px;
     font-size: 13px;
     border: none;
@@ -122,7 +119,7 @@ loadUser();
     transition: 0.2s;
 }
 
-.infoUser button:hover {
+.user-item button:hover {
     background-color: #c0392b;
 }
 
@@ -136,7 +133,6 @@ loadUser();
     cursor: pointer;
 }
 
-/* Tooltip */
 .usernameTooltip {
     position: absolute;
     bottom: 120%;

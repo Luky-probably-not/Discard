@@ -40,6 +40,7 @@ const submitForm = async () => {
     border: var(--border-color);
 }
 
+
 .headbar {
     position: absolute;
     top: 0;
