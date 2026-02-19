@@ -5,6 +5,7 @@ import DOMPurify from 'dompurify';
 import { updateMessage } from '@/api/message';
 import { useStore } from '@/store';
 
+// ========== PROPS & EMITS ==========
 const props = defineProps<{
     contentType: string;
     contentValue: string;
@@ -13,37 +14,41 @@ const props = defineProps<{
 }>();
 
 const store = useStore();
+const emit = defineEmits(['messageUpdate']);
+
+// ========== EDIT MODE STATE ==========
 const isEditing = ref(false);
 const editedContent = ref('');
 const editedContentType = ref('Text');
-const emit = defineEmits(['messageUpdate']);
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
-// Character limits (same as input component)
+// Character limits
 const TEXT_LIMIT = 400;
 const IMAGE_LIMIT = 1000;
 const isImageMode = ref(false);
 const isOverLimit = ref(false);
 
-// Computed max length for textarea
+// Compute max length based on content type
 const maxLength = computed(() => isImageMode.value ? IMAGE_LIMIT : TEXT_LIMIT);
 
-// Configure marked for linebreaks (sync mode)
+// ========== INITIALIZATION ==========
+// Configure markdown renderer on component mount
 onMounted(() => {
     marked.setOptions({
-        breaks: true,
-        async: false
+        breaks: true,  // Convert line breaks to <br>
+        async: false   // Use synchronous rendering
     });
 });
 
-// Markdown rendering with proper typing
+// ========== RENDERING UTILITIES ==========
+// Render markdown safely: parse and sanitize HTML
 const renderMarkdown = (text: string | undefined): string => {
     if (!text) return '';
     const html = marked.parse(text) as string;
     return DOMPurify.sanitize(html);
 };
 
-// Image URL validation
+// Validate if URL points to a valid image
 const isValidImageUrl = async (url: string): Promise<boolean> => {
     try {
         const response = await fetch(url, { method: 'HEAD' });
@@ -54,19 +59,20 @@ const isValidImageUrl = async (url: string): Promise<boolean> => {
     }
 };
 
-// Detect YouTube links
+// Detect if URL is a YouTube link
 const isYouTubeUrl = (url: string): boolean => {
     const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/;
     return youtubeRegex.test(url);
 };
 
-// Extract YouTube video ID
+// Extract YouTube video ID from URL
 const getYouTubeId = (url: string): string | null => {
     const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
     return match?.[1] ?? null;
 };
 
-// Auto-resize textarea
+// ========== TEXTAREA MANAGEMENT ==========
+// Auto-resize textarea to fit content height
 const resizeTextarea = (): void => {
     if (textareaRef.value) {
         textareaRef.value.style.height = 'auto';
@@ -74,29 +80,26 @@ const resizeTextarea = (): void => {
     }
 };
 
-// Handle edit input with auto-resize + limits
+// ========== EDIT MODE HANDLERS ==========
+// Handle input in edit mode: validate and resize
 const handleEditInput = async (): Promise<void> => {
     const trimmedInput = editedContent.value.trim();
 
-    // Auto-grow textarea immediately
+    // Auto-resize textarea
     resizeTextarea();
 
-    // Check for image URL and set mode
+    // Validate if input is image URL and update content type
     const isImage = await isValidImageUrl(trimmedInput);
     isImageMode.value = isImage;
 
-    // Check limits
+    // Check character limits
     isOverLimit.value = editedContent.value.length > maxLength.value;
 
-    // Update content type
-    if (isImage && !isOverLimit.value) {
-        editedContentType.value = 'Image';
-    } else {
-        editedContentType.value = 'Text';
-    }
+    // Set content type based on validation
+    editedContentType.value = isImage ? 'Image' : 'Text';
 };
 
-// Enter edit mode with immediate resize
+// Enter edit mode: load current message content
 const enterEditMode = (): void => {
     editedContent.value = props.contentValue;
     editedContentType.value = props.contentType;
@@ -104,13 +107,13 @@ const enterEditMode = (): void => {
     isOverLimit.value = false;
     isEditing.value = true;
 
-    nextTick(() => {
-        resizeTextarea(); // Immediately resize to fit content
-    });
+    // Resize textarea to fit existing content
+    nextTick(resizeTextarea);
 };
 
-// Save edit
+// Save edited message to API
 const handleSaveEdit = async (): Promise<void> => {
+    // Validate before saving
     if (isOverLimit.value || !editedContent.value.trim()) return;
 
     const updatedMessage = {
@@ -123,18 +126,23 @@ const handleSaveEdit = async (): Promise<void> => {
         }
     };
 
-    console.log(updatedMessage);
+    // Send update to API
     await updateMessage(updatedMessage);
+
+    // Notify parent to reload messages
     emit('messageUpdate');
+
+    // Exit edit mode
     isEditing.value = false;
 };
 
-// Cancel edit
+// Cancel editing and discard changes
 const handleCancel = (): void => {
     isEditing.value = false;
 };
 
-// Format timestamp
+// ========== UTILITY FUNCTIONS ==========
+// Format timestamp to readable date/time string
 const formatTimestamp = (timestamp: number | undefined): string => {
     if (!timestamp) return '';
     return new Date(timestamp).toLocaleString([], {
@@ -146,16 +154,19 @@ const formatTimestamp = (timestamp: number | undefined): string => {
     });
 };
 
-// Check if current user is creator
+// Check if current user is channel creator
 const isCreator = (): boolean => {
     return store.currentChannel?.creator === store.username;
 };
 </script>
 
 <template>
+    <!-- Message header: author, timestamp, edit button -->
     <section class="headbar">
         <p class="author">{{ props.author }}</p>
         <p class="timestamp">({{ formatTimestamp(props.timestamp) }})</p>
+
+        <!-- Edit button (only visible to channel creator, hidden during edit) -->
         <button
             v-if="isCreator() && !isEditing"
             @click="enterEditMode"
@@ -167,11 +178,14 @@ const isCreator = (): boolean => {
     </section>
 
     <section class="message-content">
-        <!-- Display mode -->
+        <!-- DISPLAY MODE: Show rendered message content -->
         <section v-if="!isEditing">
+            <!-- Image content -->
             <div v-if="props.contentType === 'Image'" class="content-image">
                 <img :src="props.contentValue" :alt="'Unable to load image'" />
             </div>
+
+            <!-- YouTube embedded video -->
             <div v-else-if="isYouTubeUrl(props.contentValue)" class="content-youtube">
                 <iframe
                     :src="`https://www.youtube.com/embed/${getYouTubeId(props.contentValue)}`"
@@ -181,25 +195,28 @@ const isCreator = (): boolean => {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 ></iframe>
             </div>
+
+            <!-- Text content -->
             <div v-else class="content-text">
                 <div v-html="renderMarkdown(props.contentValue)"></div>
             </div>
         </section>
 
-        <!-- Edit mode -->
+        <!-- EDIT MODE: Show editing form -->
         <section v-else class="edit-form">
+            <!-- Preview for edited image URLs -->
             <div v-if="editedContentType === 'Image'" class="edit-preview">
                 <img :src="editedContent" :alt="props.author" />
             </div>
 
-
-            <!-- Character Counter -->
+            <!-- Character counter during edit -->
             <div v-if="editedContent" class="char-counter">
                 <span :class="{ 'error': isOverLimit }">
                     {{ editedContent.length }} / {{ maxLength }}
                 </span>
             </div>
 
+            <!-- Edit textarea and control buttons -->
             <section class="edit-section">
                 <textarea
                     ref="textareaRef"
@@ -213,7 +230,7 @@ const isCreator = (): boolean => {
                 <div class="btn-bar">
                     <button
                         @click="handleSaveEdit"
-                        class="btn-style save-btn "
+                        class="btn-style save-btn"
                         :disabled="isOverLimit || !editedContent.trim()"
                     >
                         Save
@@ -228,7 +245,6 @@ const isCreator = (): boolean => {
 </template>
 
 <style scoped>
-
 .message-content {
     margin-top: 5px;
 }
@@ -355,5 +371,4 @@ const isCreator = (): boolean => {
     color: red;
     font-weight: bold;
 }
-
 </style>
